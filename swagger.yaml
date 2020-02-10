@@ -9,7 +9,7 @@ externalDocs:
   description: Find out more about RX/SeaPort
   url: http://www.rxseaport.eu
 servers:
-- https://portal.rxseaport.eu/ords/prd/zedis/v1
+- url: https://portal.rxseaport.eu/ords/prd/zedis/v1
 paths:
   /stay:
     get:
