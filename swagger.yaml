@@ -1,4 +1,6 @@
 openapi: 3.0.1
+basePath: "/zedis/v1"
+host: "portal.rxseaport.eu/ords/prd"
 info:
   title: RX/SeaPort Rest Services
   description: These rest services are available for the Port of Zeebrugge.
