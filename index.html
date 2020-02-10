@@ -41,7 +41,6 @@
       let params = (new URL(document.location)).searchParams;
       let api = params.get("api");
       let url = api ? "https://rxseaport.github.io/api/" + api + ".yaml" : "";
-      //let url = api ? "https://rxseaport.github.io/swagger.yaml" : "";
       const ui = SwaggerUIBundle({
         url: url,
         //url: "swagger.yaml",
