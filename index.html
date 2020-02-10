@@ -39,8 +39,8 @@
     window.onload = function() {
       // Begin Swagger UI call region
       let params = (new URL(document.location)).searchParams;
-      let file = params.get("file");
-      let url = file ? "https://rxseaport.github.io/api/" + file + ".yaml" : "";
+      let api = params.get("api");
+      let url = api ? "https://rxseaport.github.io/api/" + api + ".yaml" : "";
       const ui = SwaggerUIBundle({
         url: url,
         //url: "swagger.yaml",
