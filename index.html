@@ -42,8 +42,8 @@
       let api = params.get("api");
       let url = api ? "https://rxseaport.github.io/api/" + api + ".yaml" : "";
       const ui = SwaggerUIBundle({
-        url: url,
-        //url: "swagger.yaml",
+        //url: url,
+        url: "swagger.yaml",
         dom_id: '#swagger-ui',
         deepLinking: true,
         presets: [
