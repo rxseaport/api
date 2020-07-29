@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: RX/SeaPort Zedis Rest Services
-  description: These rest services are available for the Port of Zeebrugge.
+  description: These rest services are available for the Zedis information of the Port of Zeebrugge.
   contact:
     email: support@rxseaport.eu
   version: 1.0.0
@@ -11,11 +11,134 @@ externalDocs:
 servers:
 - url: https://portal.rxseaport.eu/ords/prd/zedis/v1
 paths:
+  /vessel:
+    get:
+      tags:
+      - "Vessel"
+      summary: Get Vessel Info
+      description: Returns information on a passed-in vessel (either through IMO or MMSI number).
+      operationId: getVessel
+      parameters:
+      - name: imo
+        in: query
+        description: IMO Number
+        required: true
+        schema:
+          type: string
+      - name: format
+        in: query
+        description: Response format
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            default: xml
+            enum:
+            - xml
+            - json
+      - name: token
+        in: query
+        description: Authentication token (aka API Key)
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/xml:
+              examples:
+                Example1:
+                  summary: Example 1
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Vessel VersionMajor="1" VersionMinor="0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:RXZDD"><Name>CITY OF ST PETERSBURG</Name><IMO>9473456</IMO><MMSI>353083000</MMSI><CallSign>3FIM5</CallSign><Flag><Code>PA</Code><Name>Panama</Name></Flag><ShipType><Code>1513</Code><Name>Car Carrier</Name><Description>Vessel designed to carry automotive vehicles or their knock-down parts.</Description></ShipType><OverallLength>139.98</OverallLength><OverallBeam>22.40</OverallBeam><MaxDraught>7.00</MaxDraught><GrossTonnage>21143.00</GrossTonnage></Vessel>'
+                Example2:
+                  summary: Example 2
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Vessel VersionMajor="1" VersionMinor="0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:RXZDD"><Name>NORSTREAM</Name><IMO>9186194</IMO><MMSI>230653000</MMSI><CallSign>OJRC</CallSign><Flag><Code>FI</Code><Name>Finland</Name></Flag><ShipType><Code>1512</Code><Name>RoRo Vessel</Name><Description>Vessel with ramp designed to carry roll-on/roll-off cargo.</Description></ShipType><OverallLength>180.00</OverallLength><OverallBeam>25.20</OverallBeam><MaxDraught>6.51</MaxDraught><GrossTonnage>20296.00</GrossTonnage></Vessel>'
+            application/json:
+              examples:
+                Example1:
+                  summary: Example 1
+                  value: '{ "@VersionMajor": 1, "@VersionMinor": 0, "Name": "CITY OF ST PETERSBURG", "IMO": 9473456, "MMSI": 353083000, "CallSign": "3FIM5", "Flag": { "Code": "PA", "Name": "Panama" }, "ShipType": { "Code": 1513, "Name": "Car Carrier", "Description": "Vessel designed to carry automotive vehicles or their knock-down parts." }, "OverallLength": 139.98, "OverallBeam": 22.40, "MaxDraught": 7.00, "GrossTonnage": 21143.00 }'
+                Example2:
+                  summary: Example 2
+                  value: '{ "@VersionMajor": 1, "@VersionMinor": 0, "Name": "NORSTREAM", "IMO": 9186194, "MMSI": 230653000, "CallSign": "OJRC", "Flag": { "Code": "FI", "Name": "Finland" }, "ShipType": { "Code": 1512, "Name": "RoRo Vessel", "Description": "Vessel with ramp designed to carry roll-on/roll-off cargo." }, "OverallLength": 180.00, "OverallBeam": 25.20, "MaxDraught": 6.51, "GrossTonnage": 20296.00 }'
+        400:
+          description: Bad Request
+          content:
+            application/xml:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>PARAMETER_MISSING</Code><Message>A required input parameter is missing in your request. Please consult the web service documentation.</Message></Error>'
+                MissingData:
+                  summary: Missing Data
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>DATA_MISSING</Code><Message>No data was found for your selection. Please try again with another selection.</Message></Error>'
+            application/json:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '{"Code": "PARAMETER_MISSING","Message": "A required input parameter is missing in your request. Please consult the web service documentation."}'
+                MissingData:
+                  summary: Missing Data
+                  value: '{"Code": "DATA_MISSING","Message": "No data was found for your selection. Please try again with another selection."}'
+        403:
+          description: Unauthorized
+          content:
+            application/xml:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_MISSING</Code><Message>An access token was not supplied. See documentation for details on how to pass your token to the web service.</Message></Error>'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_INVALID</Code><Message>An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token.</Message></Error>'
+                DisabledToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_DISABLED</Code><Message>The supplied token has been disabled. Please contact us for assistance.</Message></Error>'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_EXPIRED</Code><Message>The supplied token is expired. Please contact us for assistance.</Message></Error>'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_UNAUTHORIZED</Code><Message>The supplied token is not authorized to access the given web service. Please contact us for assistance.</Message></Error>'
+            application/json:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '{"Code": "TOKEN_MISSING","Message": "An access token was not supplied. See documentation for details on how to pass your token to the web service."}'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '{"Code": "TOKEN_INVALID","Message": "An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token."}'
+                DisabledToken:
+                  summary: Disabled Token
+                  value: '{"Code": "TOKEN_DISABLED","Message": "The supplied token has been disabled. Please contact us for assistance."}'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '{"Code": "TOKEN_EXPIRED","Message": "The supplied token is expired. Please contact us for assistance."}'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '{"Code": "TOKEN_UNAUTHORIZED","Message": "The supplied token is not authorized to access the given web service. Please contact us for assistance."}'
+        500:
+          description: Error
+          content:
+            application/xml:
+              examples:
+                Error:
+                  summary: Error
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>ORA-XXXXX</Code><Message>Explanation for the error.</Message></Error>'
+            application/json:
+              examples:
+                Error:
+                  summary: Error
+                  value: '{"Code": "ORA-XXXXX","Message": "Explanation for the error."}'
   /stay/{id}:
     get:
       tags:
       - "Stay"
-      summary: Stay Info
+      summary: Get Stay Info
       description: Returns detailed information on a passed-in stay number (including its voyages and passages).
       operationId: getStay
       parameters:
