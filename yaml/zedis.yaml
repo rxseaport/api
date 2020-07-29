@@ -1,0 +1,716 @@
+openapi: 3.0.1
+info:
+  title: RX/SeaPort Zedis Rest Services
+  description: These rest services are available for the Zedis information of the Port of Zeebrugge.
+  contact:
+    email: support@rxseaport.eu
+  version: 1.0.0
+externalDocs:
+  description: Find out more about RX/SeaPort
+  url: http://www.rxseaport.eu
+servers:
+- url: https://portal.rxseaport.eu/ords/prd/zedis/v1
+paths:
+  /vessels:
+    get:
+      tags:
+      - "Vessels"
+      summary: Search Vessels
+      description: Lists all vessels for a passed-in search string.
+      operationId: getVessels
+      parameters:
+      - name: search
+        in: query
+        description: Search String
+        required: false
+        schema:
+          type: string
+        example: energy
+      - name: format
+        in: query
+        description: Response format
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            default: xml
+            enum:
+            - xml
+            - json
+      - name: token
+        in: query
+        description: Authentication token (aka API Key)
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/xml:
+              examples:
+                Example1:
+                  summary: Example 1
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Vessels VersionMajor="1" VersionMinor="0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:RXZDD"><Vessel><Name>VIKING ENERGY</Name><IMO>9868510</IMO><MMSI>232020323</MMSI><Links><Link><href>https://portal.rxseaport.eu/ords/prd/zedis/v1/vessel?imo=9868510</href><rel>self</rel></Link></Links></Vessel><Vessel><Name>AUTO ENERGY</Name><IMO>9736377</IMO><MMSI>255805908</MMSI><Links><Link><href>https://portal.rxseaport.eu/ords/prd/zedis/v1/vessel?imo=9736377</href><rel>self</rel></Link></Links></Vessel><Vessel><Name>ENERGY ATLANTIC</Name><IMO>9649328</IMO><MMSI>256647000</MMSI><Links><Link><href>https://portal.rxseaport.eu/ords/prd/zedis/v1/vessel?imo=9649328</href><rel>self</rel></Link></Links></Vessel><Vessel><Name>ENERGY</Name><IMO>9255787</IMO><MMSI>255806300</MMSI><Links><Link><href>https://portal.rxseaport.eu/ords/prd/zedis/v1/vessel?imo=9255787</href><rel>self</rel></Link></Links></Vessel></Vessels>'
+                Example2:
+                  summary: Example 2
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Vessels VersionMajor="1" VersionMinor="0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:RXZDD"><Vessel><Name>WORLD EXPLORER</Name><IMO>9835719</IMO><MMSI>255806193</MMSI><Links><Link><href>https://portal.rxseaport.eu/ords/prd/zedis/v1/vessel?imo=9835719</href><rel>self</rel></Link></Links></Vessel></Vessels'
+            application/json:
+              examples:
+                Example1:
+                  summary: Example 1
+                  value: '{ "@VersionMajor": 1 }, { "@VersionMinor": 0 }, { "Name": "VIKING ENERGY", "IMO": 9868510, "MMSI": 232020323, "Links": { "Link": { "href": "https://portal.rxseaport.eu/ords/prd/zedis/v1/vessel?imo=9868510", "rel": "self" } } }, { "Name": "AUTO ENERGY", "IMO": 9736377, "MMSI": 255805908, "Links": { "Link": { "href": "https://portal.rxseaport.eu/ords/prd/zedis/v1/vessel?imo=9736377", "rel": "self" } } }, { "Name": "ENERGY ATLANTIC", "IMO": 9649328, "MMSI": 256647000, "Links": { "Link": { "href": "https://portal.rxseaport.eu/ords/prd/zedis/v1/vessel?imo=9649328", "rel": "self" } } }, { "Name": "ENERGY", "IMO": 9255787, "MMSI": 255806300, "Links": { "Link": { "href": "https://portal.rxseaport.eu/ords/prd/zedis/v1/vessel?imo=9255787", "rel": "self" } } }'
+                Example2:
+                  summary: Example 2
+                  value: '{ "@VersionMajor": 1, "@VersionMinor": 0, "Vessel": { "Name": "WORLD EXPLORER", "IMO": 9835719, "MMSI": 255806193, "Links": { "Link": { "href": "https://portal.rxseaport.eu/ords/prd/zedis/v1/vessel?imo=9835719", "rel": "self" } } } }'
+        400:
+          description: Bad Request
+          content:
+            application/xml:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>PARAMETER_MISSING</Code><Message>A required input parameter is missing in your request. Please consult the web service documentation.</Message></Error>'
+                MissingData:
+                  summary: Missing Data
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>DATA_MISSING</Code><Message>No data was found for your selection. Please try again with another selection.</Message></Error>'
+            application/json:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '{"Code": "PARAMETER_MISSING","Message": "A required input parameter is missing in your request. Please consult the web service documentation."}'
+                MissingData:
+                  summary: Missing Data
+                  value: '{"Code": "DATA_MISSING","Message": "No data was found for your selection. Please try again with another selection."}'
+        403:
+          description: Unauthorized
+          content:
+            application/xml:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_MISSING</Code><Message>An access token was not supplied. See documentation for details on how to pass your token to the web service.</Message></Error>'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_INVALID</Code><Message>An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token.</Message></Error>'
+                DisabledToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_DISABLED</Code><Message>The supplied token has been disabled. Please contact us for assistance.</Message></Error>'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_EXPIRED</Code><Message>The supplied token is expired. Please contact us for assistance.</Message></Error>'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_UNAUTHORIZED</Code><Message>The supplied token is not authorized to access the given web service. Please contact us for assistance.</Message></Error>'
+            application/json:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '{"Code": "TOKEN_MISSING","Message": "An access token was not supplied. See documentation for details on how to pass your token to the web service."}'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '{"Code": "TOKEN_INVALID","Message": "An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token."}'
+                DisabledToken:
+                  summary: Disabled Token
+                  value: '{"Code": "TOKEN_DISABLED","Message": "The supplied token has been disabled. Please contact us for assistance."}'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '{"Code": "TOKEN_EXPIRED","Message": "The supplied token is expired. Please contact us for assistance."}'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '{"Code": "TOKEN_UNAUTHORIZED","Message": "The supplied token is not authorized to access the given web service. Please contact us for assistance."}'
+        500:
+          description: Error
+          content:
+            application/xml:
+              examples:
+                Error:
+                  summary: Error
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>ORA-XXXXX</Code><Message>Explanation for the error.</Message></Error>'
+            application/json:
+              examples:
+                Error:
+                  summary: Error
+                  value: '{"Code": "ORA-XXXXX","Message": "Explanation for the error."}'
+  /vessel:
+    get:
+      tags:
+      - "Vessel"
+      summary: Get Vessel Info
+      description: Returns information on a passed-in vessel (either through IMO or MMSI number, one of both needs to be supplied).
+      operationId: getVessel
+      parameters:
+      - name: imo
+        in: query
+        description: IMO Number
+        required: false
+        schema:
+          type: string
+        example: 9473456
+      - name: mmsi
+        in: query
+        description: MMSI Number
+        required: false
+        schema:
+          type: string
+        example: 353083000
+      - name: format
+        in: query
+        description: Response format
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            default: xml
+            enum:
+            - xml
+            - json
+      - name: token
+        in: query
+        description: Authentication token (aka API Key)
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/xml:
+              examples:
+                Example1:
+                  summary: Example 1
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Vessel VersionMajor="1" VersionMinor="0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:RXZDD"><Name>CITY OF ST PETERSBURG</Name><IMO>9473456</IMO><MMSI>353083000</MMSI><CallSign>3FIM5</CallSign><Flag><Code>PA</Code><Name>Panama</Name></Flag><ShipType><Code>1513</Code><Name>Car Carrier</Name><Description>Vessel designed to carry automotive vehicles or their knock-down parts.</Description></ShipType><OverallLength>139.98</OverallLength><OverallBeam>22.40</OverallBeam><MaxDraught>7.00</MaxDraught><GrossTonnage>21143.00</GrossTonnage></Vessel>'
+                Example2:
+                  summary: Example 2
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Vessel VersionMajor="1" VersionMinor="0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:RXZDD"><Name>NORSTREAM</Name><IMO>9186194</IMO><MMSI>230653000</MMSI><CallSign>OJRC</CallSign><Flag><Code>FI</Code><Name>Finland</Name></Flag><ShipType><Code>1512</Code><Name>RoRo Vessel</Name><Description>Vessel with ramp designed to carry roll-on/roll-off cargo.</Description></ShipType><OverallLength>180.00</OverallLength><OverallBeam>25.20</OverallBeam><MaxDraught>6.51</MaxDraught><GrossTonnage>20296.00</GrossTonnage></Vessel>'
+            application/json:
+              examples:
+                Example1:
+                  summary: Example 1
+                  value: '{ "@VersionMajor": 1, "@VersionMinor": 0, "Name": "CITY OF ST PETERSBURG", "IMO": 9473456, "MMSI": 353083000, "CallSign": "3FIM5", "Flag": { "Code": "PA", "Name": "Panama" }, "ShipType": { "Code": 1513, "Name": "Car Carrier", "Description": "Vessel designed to carry automotive vehicles or their knock-down parts." }, "OverallLength": 139.98, "OverallBeam": 22.40, "MaxDraught": 7.00, "GrossTonnage": 21143.00 }'
+                Example2:
+                  summary: Example 2
+                  value: '{ "@VersionMajor": 1, "@VersionMinor": 0, "Name": "NORSTREAM", "IMO": 9186194, "MMSI": 230653000, "CallSign": "OJRC", "Flag": { "Code": "FI", "Name": "Finland" }, "ShipType": { "Code": 1512, "Name": "RoRo Vessel", "Description": "Vessel with ramp designed to carry roll-on/roll-off cargo." }, "OverallLength": 180.00, "OverallBeam": 25.20, "MaxDraught": 6.51, "GrossTonnage": 20296.00 }'
+        400:
+          description: Bad Request
+          content:
+            application/xml:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>PARAMETER_MISSING</Code><Message>A required input parameter is missing in your request. Please consult the web service documentation.</Message></Error>'
+                MissingData:
+                  summary: Missing Data
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>DATA_MISSING</Code><Message>No data was found for your selection. Please try again with another selection.</Message></Error>'
+            application/json:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '{"Code": "PARAMETER_MISSING","Message": "A required input parameter is missing in your request. Please consult the web service documentation."}'
+                MissingData:
+                  summary: Missing Data
+                  value: '{"Code": "DATA_MISSING","Message": "No data was found for your selection. Please try again with another selection."}'
+        403:
+          description: Unauthorized
+          content:
+            application/xml:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_MISSING</Code><Message>An access token was not supplied. See documentation for details on how to pass your token to the web service.</Message></Error>'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_INVALID</Code><Message>An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token.</Message></Error>'
+                DisabledToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_DISABLED</Code><Message>The supplied token has been disabled. Please contact us for assistance.</Message></Error>'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_EXPIRED</Code><Message>The supplied token is expired. Please contact us for assistance.</Message></Error>'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_UNAUTHORIZED</Code><Message>The supplied token is not authorized to access the given web service. Please contact us for assistance.</Message></Error>'
+            application/json:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '{"Code": "TOKEN_MISSING","Message": "An access token was not supplied. See documentation for details on how to pass your token to the web service."}'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '{"Code": "TOKEN_INVALID","Message": "An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token."}'
+                DisabledToken:
+                  summary: Disabled Token
+                  value: '{"Code": "TOKEN_DISABLED","Message": "The supplied token has been disabled. Please contact us for assistance."}'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '{"Code": "TOKEN_EXPIRED","Message": "The supplied token is expired. Please contact us for assistance."}'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '{"Code": "TOKEN_UNAUTHORIZED","Message": "The supplied token is not authorized to access the given web service. Please contact us for assistance."}'
+        500:
+          description: Error
+          content:
+            application/xml:
+              examples:
+                Error:
+                  summary: Error
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>ORA-XXXXX</Code><Message>Explanation for the error.</Message></Error>'
+            application/json:
+              examples:
+                Error:
+                  summary: Error
+                  value: '{"Code": "ORA-XXXXX","Message": "Explanation for the error."}'
+  /stay/{id}:
+    get:
+      tags:
+      - "Stay"
+      summary: Get Stay Info
+      description: Returns detailed information on a passed-in stay number (including its voyages and passages).
+      operationId: getStay
+      parameters:
+      - name: id
+        in: path
+        description: Stay Number
+        required: true
+        schema:
+          type: string
+        example: 524447
+      - name: format
+        in: query
+        description: Response format
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            default: xml
+            enum:
+            - xml
+            - json
+      - name: token
+        in: query
+        description: Authentication token (aka API Key)
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/xml:
+              examples:
+                Example1:
+                  summary: Example 1
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Stay VersionMajor="1" VersionMinor="0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:RXZDD"><Number>524447</Number><Status>Active</Status><Vessel><Name>SCHELDE HIGHWAY</Name><IMO>9065405</IMO><MMSI>355444000</MMSI><Links><Link><href>https://portal.rxseaport.eu/ords/prd/zedis/v1/vessel?imo=9065405</href><rel>self</rel></Link></Links></Vessel><ETA>2020-06-26T02:00:00Z</ETA><ATA>2020-06-26T04:21:56Z</ATA><ETD>2020-06-26T14:00:00Z</ETD><ATD>2020-06-26T14:06:41Z</ATD><Origin><Port><Code>GBIMM</Code><Name>Immingham</Name><Links><Link><href>https://portal.rxseaport.eu/ords/prd/locations/v1/locode/GBIMM</href><rel>self</rel></Link></Links></Port><ETD>2020-06-25T07:00:00Z</ETD></Origin><Destination><Port><Code>IEDUB</Code><Name>Dublin</Name><Links><Link><href>https://portal.rxseaport.eu/ords/prd/locations/v1/locode/IEDUB</href><rel>self</rel></Link></Links></Port><ETA>2020-06-29T04:00:00Z</ETA></Destination><Voyages><Voyage><Number>524447I</Number><Sequence>1</Sequence><Type>IN</Type><Agent><Code>DEBAE</Code><Name>De Baerdemaecker</Name></Agent><From><Location><Code>BESEA0WEST00AWN</Code><Name>Wandelaar</Name></Location><EstimatedTime>2020-06-26T00:30:00Z</EstimatedTime><ActualTime>2020-06-26T01:02:00Z</ActualTime></From><To><Location><Code>BEZEE0750200510</Code><Name>BEZEE0750200510</Name></Location><EstimatedTime>2020-06-26T02:00:00Z</EstimatedTime><ActualTime>2020-06-26T04:21:56Z</ActualTime><MooringSide>SB</MooringSide></To><Passages><Passage><LoCode>BEZEE</LoCode><FairwayCode>07503</FairwayCode><Description>STREK</Description><Type>PASSAGE</Type><ActualTime>2020-06-26T02:46:09Z</ActualTime></Passage></Passages><Draught>4.70</Draught><Persons><Crew>14</Crew></Persons></Voyage><Voyage><Number>524447S1</Number><Sequence>2</Sequence><Type>SHIFT</Type><Agent><Code>DEBAE</Code><Name>De Baerdemaecker</Name></Agent><From><Location><Code>BEZEE0750200510</Code><Name>BEZEE0750200510</Name></Location><EstimatedTime>2020-06-26T08:00:00Z</EstimatedTime><MooringSide>SB</MooringSide></From><To><Location><Code>BEZEE0750200525</Code><Name>Zeebrugge Binnenhaven (K525)</Name></Location></To><Passages></Passages><Draught>5.00</Draught><Persons><Crew>14</Crew></Persons></Voyage><Voyage><Number>524447U</Number><Sequence>3</Sequence><Type>OUT</Type><Agent><Code>DEBAE</Code><Name>De Baerdemaecker</Name></Agent><From><Location><Code>BEZEE0750200525</Code><Name>Zeebrugge Binnenhaven (K525)</Name></Location><EstimatedTime>2020-06-26T14:00:00Z</EstimatedTime><ActualTime>2020-06-26T14:06:41Z</ActualTime><MooringSide>GV</MooringSide></From><To><Location><Code>BESEA0WEST00AWN</Code><Name>Wandelaar</Name></Location><ActualTime>2020-06-26T17:02:00Z</ActualTime></To><Passages><Passage><LoCode>BEZEE</LoCode><FairwayCode>07503</FairwayCode><Description>STREK</Description><Type>PASSAGE</Type><ActualTime>2020-06-26T15:27:08Z</ActualTime></Passage></Passages><Draught>4.80</Draught><Persons><Crew>14</Crew></Persons></Voyage></Voyages></Stay>'
+                Example2:
+                  summary: Example 2
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Stay VersionMajor="1" VersionMinor="0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:RXZDD"><Number>525537</Number><Status>Active</Status><Vessel><Name>NORSTREAM</Name><IMO>9186194</IMO><MMSI>230653000</MMSI><Links><Link><href>https://portal.rxseaport.eu/ords/prd/zedis/v1/vessel?imo=9186194</href><rel>self</rel></Link></Links></Vessel><ETA>2020-07-29T17:20:00Z</ETA><ATA>2020-07-29T16:15:32Z</ATA><ETD>2020-07-29T21:00:00Z</ETD><Origin><Port><Code>GBTIL</Code><Name>Tilbury</Name><Links><Link><href>https://portal.rxseaport.eu/ords/prd/locations/v1/locode/GBTIL</href><rel>self</rel></Link></Links></Port><ETD>2020-07-29T08:00:00Z</ETD></Origin><Destination><Port><Code>GBTIL</Code><Name>Tilbury</Name><Links><Link><href>https://portal.rxseaport.eu/ords/prd/locations/v1/locode/GBTIL</href><rel>self</rel></Link></Links></Port><ETA>2020-07-30T04:00:00Z</ETA></Destination><Voyages><Voyage><Number>525537I</Number><Sequence>1</Sequence><Type>IN</Type><Agent><Code>PONSF</Code><Name>P&amp;O Ferries</Name></Agent><From><Location><Code>BESEA0WEST00AWN</Code><Name>Wandelaar</Name></Location><EstimatedTime>2020-07-29T15:50:00Z</EstimatedTime><ActualTime>2020-07-29T15:37:00Z</ActualTime></From><To><Location><Code>BEZEE0750300113</Code><Name>Zeebrugge Buitenhaven (K113)</Name></Location><EstimatedTime>2020-07-29T17:20:00Z</EstimatedTime><ActualTime>2020-07-29T16:15:32Z</ActualTime><MooringSide>SB</MooringSide></To><Passages><Passage><LoCode>BEZEE</LoCode><FairwayCode>07503</FairwayCode><Description>STREK</Description><Type>PASSAGE</Type><ActualTime>2020-07-29T16:15:32Z</ActualTime></Passage></Passages><Draught>5.70</Draught><Persons><Crew>17</Crew><Passengers>2</Passengers></Persons></Voyage><Voyage><Number>525537U</Number><Sequence>2</Sequence><Type>OUT</Type><Agent><Code>PONSF</Code><Name>P&amp;O Ferries</Name></Agent><From><Location><Code>BEZEE0750300113</Code><Name>Zeebrugge Buitenhaven (K113)</Name></Location><EstimatedTime>2020-07-29T21:00:00Z</EstimatedTime><MooringSide>GV</MooringSide></From><To><Location><Code>BESEA0WEST00AWN</Code><Name>Wandelaar</Name></Location></To><Passages></Passages><Draught>6.40</Draught><Persons><Crew>17</Crew></Persons></Voyage></Voyages></Stay>'
+            application/json:
+              examples:
+                Example1:
+                  summary: Example 1
+                  value: '{ "@VersionMajor": 1, "@VersionMinor": 0, "Number": 524447, "Status": "Active", "Vessel": { "Name": "SCHELDE HIGHWAY", "IMO": 9065405, "MMSI": 355444000, "Links": { "Link": { "href": "https://portal.rxseaport.eu/ords/prd/zedis/v1/vessel?imo=9065405", "rel": "self" } } }, "ETA": "2020-06-26T02:00:00Z", "ATA": "2020-06-26T04:21:56Z", "ETD": "2020-06-26T14:00:00Z", "ATD": "2020-06-26T14:06:41Z", "Origin": { "Port": { "Code": "GBIMM", "Name": "Immingham", "Links": { "Link": { "href": "https://portal.rxseaport.eu/ords/prd/locations/v1/locode/GBIMM", "rel": "self" } } }, "ETD": "2020-06-25T07:00:00Z" }, "Destination": { "Port": { "Code": "IEDUB", "Name": "Dublin", "Links": { "Link": { "href": "https://portal.rxseaport.eu/ords/prd/locations/v1/locode/IEDUB", "rel": "self" } } }, "ETA": "2020-06-29T04:00:00Z" }, "Voyages": [ { "Number": "524447I", "Sequence": 1, "Type": "IN", "Agent": { "Code": "DEBAE", "Name": "De Baerdemaecker" }, "From": { "Location": { "Code": "BESEA0WEST00AWN", "Name": "Wandelaar" }, "EstimatedTime": "2020-06-26T00:30:00Z", "ActualTime": "2020-06-26T01:02:00Z" }, "To": { "Location": { "Code": "BEZEE0750200510", "Name": "BEZEE0750200510" }, "EstimatedTime": "2020-06-26T02:00:00Z", "ActualTime": "2020-06-26T04:21:56Z", "MooringSide": "SB" }, "Passages": { "Passage": { "LoCode": "BEZEE", "FairwayCode": "07503", "Description": "STREK", "Type": "PASSAGE", "ActualTime": "2020-06-26T02:46:09Z" } }, "Draught": 4.70, "Persons": { "Crew": 14 } }, { "Number": "524447S1", "Sequence": 2, "Type": "SHIFT", "Agent": { "Code": "DEBAE", "Name": "De Baerdemaecker" }, "From": { "Location": { "Code": "BEZEE0750200510", "Name": "BEZEE0750200510" }, "EstimatedTime": "2020-06-26T08:00:00Z", "MooringSide": "SB" }, "To": { "Location": { "Code": "BEZEE0750200525", "Name": "Zeebrugge Binnenhaven (K525)" } }, "Passages": null, "Draught": 5.00, "Persons": { "Crew": 14 } }, { "Number": "524447U", "Sequence": 3, "Type": "OUT", "Agent": { "Code": "DEBAE", "Name": "De Baerdemaecker" }, "From": { "Location": { "Code": "BEZEE0750200525", "Name": "Zeebrugge Binnenhaven (K525)" }, "EstimatedTime": "2020-06-26T14:00:00Z", "ActualTime": "2020-06-26T14:06:41Z", "MooringSide": "GV" }, "To": { "Location": { "Code": "BESEA0WEST00AWN", "Name": "Wandelaar" }, "ActualTime": "2020-06-26T17:02:00Z" }, "Passages": { "Passage": { "LoCode": "BEZEE", "FairwayCode": "07503", "Description": "STREK", "Type": "PASSAGE", "ActualTime": "2020-06-26T15:27:08Z" } }, "Draught": 4.80, "Persons": { "Crew": 14 } } ]'
+                Example2:
+                  summary: Example 2
+                  value: '{ "@VersionMajor": 1, "@VersionMinor": 0, "Number": 525537, "Status": "Active", "Vessel": { "Name": "NORSTREAM", "IMO": 9186194, "MMSI": 230653000, "Links": { "Link": { "href": "https://portal.rxseaport.eu/ords/prd/zedis/v1/vessel?imo=9186194", "rel": "self" } } }, "ETA": "2020-07-29T17:20:00Z", "ATA": "2020-07-29T16:15:32Z", "ETD": "2020-07-29T21:00:00Z", "Origin": { "Port": { "Code": "GBTIL", "Name": "Tilbury", "Links": { "Link": { "href": "https://portal.rxseaport.eu/ords/prd/locations/v1/locode/GBTIL", "rel": "self" } } }, "ETD": "2020-07-29T08:00:00Z" }, "Destination": { "Port": { "Code": "GBTIL", "Name": "Tilbury", "Links": { "Link": { "href": "https://portal.rxseaport.eu/ords/prd/locations/v1/locode/GBTIL", "rel": "self" } } }, "ETA": "2020-07-30T04:00:00Z" }, "Voyages": [ { "Number": "525537I", "Sequence": 1, "Type": "IN", "Agent": { "Code": "PONSF", "Name": "P&O Ferries" }, "From": { "Location": { "Code": "BESEA0WEST00AWN", "Name": "Wandelaar" }, "EstimatedTime": "2020-07-29T15:50:00Z", "ActualTime": "2020-07-29T15:37:00Z" }, "To": { "Location": { "Code": "BEZEE0750300113", "Name": "Zeebrugge Buitenhaven (K113)" }, "EstimatedTime": "2020-07-29T17:20:00Z", "ActualTime": "2020-07-29T16:15:32Z", "MooringSide": "SB" }, "Passages": { "Passage": { "LoCode": "BEZEE", "FairwayCode": "07503", "Description": "STREK", "Type": "PASSAGE", "ActualTime": "2020-07-29T16:15:32Z" } }, "Draught": 5.70, "Persons": { "Crew": 17, "Passengers": 2 } }, { "Number": "525537U", "Sequence": 2, "Type": "OUT", "Agent": { "Code": "PONSF", "Name": "P&O Ferries" }, "From": { "Location": { "Code": "BEZEE0750300113", "Name": "Zeebrugge Buitenhaven (K113)" }, "EstimatedTime": "2020-07-29T21:00:00Z", "MooringSide": "GV" }, "To": { "Location": { "Code": "BESEA0WEST00AWN", "Name": "Wandelaar" } }, "Passages": null, "Draught": 6.40, "Persons": { "Crew": 17 } } ] }'
+        400:
+          description: Bad Request
+          content:
+            application/xml:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>PARAMETER_MISSING</Code><Message>A required input parameter is missing in your request. Please consult the web service documentation.</Message></Error>'
+                MissingData:
+                  summary: Missing Data
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>DATA_MISSING</Code><Message>No data was found for your selection. Please try again with another selection.</Message></Error>'
+            application/json:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '{"Code": "PARAMETER_MISSING","Message": "A required input parameter is missing in your request. Please consult the web service documentation."}'
+                MissingData:
+                  summary: Missing Data
+                  value: '{"Code": "DATA_MISSING","Message": "No data was found for your selection. Please try again with another selection."}'
+        403:
+          description: Unauthorized
+          content:
+            application/xml:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_MISSING</Code><Message>An access token was not supplied. See documentation for details on how to pass your token to the web service.</Message></Error>'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_INVALID</Code><Message>An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token.</Message></Error>'
+                DisabledToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_DISABLED</Code><Message>The supplied token has been disabled. Please contact us for assistance.</Message></Error>'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_EXPIRED</Code><Message>The supplied token is expired. Please contact us for assistance.</Message></Error>'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_UNAUTHORIZED</Code><Message>The supplied token is not authorized to access the given web service. Please contact us for assistance.</Message></Error>'
+            application/json:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '{"Code": "TOKEN_MISSING","Message": "An access token was not supplied. See documentation for details on how to pass your token to the web service."}'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '{"Code": "TOKEN_INVALID","Message": "An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token."}'
+                DisabledToken:
+                  summary: Disabled Token
+                  value: '{"Code": "TOKEN_DISABLED","Message": "The supplied token has been disabled. Please contact us for assistance."}'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '{"Code": "TOKEN_EXPIRED","Message": "The supplied token is expired. Please contact us for assistance."}'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '{"Code": "TOKEN_UNAUTHORIZED","Message": "The supplied token is not authorized to access the given web service. Please contact us for assistance."}'
+        500:
+          description: Error
+          content:
+            application/xml:
+              examples:
+                Error:
+                  summary: Error
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>ORA-XXXXX</Code><Message>Explanation for the error.</Message></Error>'
+            application/json:
+              examples:
+                Error:
+                  summary: Error
+                  value: '{"Code": "ORA-XXXXX","Message": "Explanation for the error."}'
+    delete:
+      tags:
+      - "Stay"
+      summary: Delete Stay
+      description: Removes a stay.
+      operationId: deleteStay
+      parameters:
+      - name: id
+        in: path
+        description: Stay Number
+        required: true
+        schema:
+          type: string
+        example: 524447
+      - name: format
+        in: query
+        description: Response format
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            default: xml
+            enum:
+            - xml
+            - json
+      - name: token
+        in: query
+        description: Authentication token (aka API Key)
+        required: true
+        schema:
+          type: string
+      responses:
+        204:
+          description: Successful operation
+        400:
+          description: Bad Request
+          content:
+            application/xml:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>PARAMETER_MISSING</Code><Message>A required input parameter is missing in your request. Please consult the web service documentation.</Message></Error>'
+            application/json:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '{"Code": "PARAMETER_MISSING","Message": "A required input parameter is missing in your request. Please consult the web service documentation."}'
+        403:
+          description: Unauthorized
+          content:
+            application/xml:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_MISSING</Code><Message>An access token was not supplied. See documentation for details on how to pass your token to the web service.</Message></Error>'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_INVALID</Code><Message>An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token.</Message></Error>'
+                DisabledToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_DISABLED</Code><Message>The supplied token has been disabled. Please contact us for assistance.</Message></Error>'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_EXPIRED</Code><Message>The supplied token is expired. Please contact us for assistance.</Message></Error>'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_UNAUTHORIZED</Code><Message>The supplied token is not authorized to access the given web service. Please contact us for assistance.</Message></Error>'
+            application/json:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '{"Code": "TOKEN_MISSING","Message": "An access token was not supplied. See documentation for details on how to pass your token to the web service."}'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '{"Code": "TOKEN_INVALID","Message": "An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token."}'
+                DisabledToken:
+                  summary: Disabled Token
+                  value: '{"Code": "TOKEN_DISABLED","Message": "The supplied token has been disabled. Please contact us for assistance."}'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '{"Code": "TOKEN_EXPIRED","Message": "The supplied token is expired. Please contact us for assistance."}'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '{"Code": "TOKEN_UNAUTHORIZED","Message": "The supplied token is not authorized to access the given web service. Please contact us for assistance."}'
+        500:
+          description: Error
+          content:
+            application/xml:
+              examples:
+                Error:
+                  summary: Error
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>ORA-XXXXX</Code><Message>Explanation for the error.</Message></Error>'
+            application/json:
+              examples:
+                Error:
+                  summary: Error
+                  value: '{"Code": "ORA-XXXXX","Message": "Explanation for the error."}'
+  /voyage/{id}:
+    get:
+      tags:
+      - "Voyage"
+      summary: Get Voyage Info
+      description: Returns detailed information on a passed-in voyage number (including its passages).
+      operationId: getVoyage
+      parameters:
+      - name: id
+        in: path
+        description: Voyage Number
+        required: true
+        schema:
+          type: string
+        example: 519908U
+      - name: format
+        in: query
+        description: Response format
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            default: xml
+            enum:
+            - xml
+            - json
+      - name: token
+        in: query
+        description: Authentication token (aka API Key)
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/xml:
+              examples:
+                Example1:
+                  summary: Example 1
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Voyage VersionMajor="1" VersionMinor="0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:RXZDD"><Number>519908U</Number><Status>Cancelled</Status><Type>OUT</Type><Agent>HOPPEZ</Agent><From><Location><Code>BEZEE0750300616</Code><Name>BEZEE0750300616</Name></Location><EstimatedTime>2019-12-27T11:00:00Z</EstimatedTime></From><To><Location><Code>BESEA0WEST00AWN</Code><Name>Wandelaar</Name></Location></To><Passages></Passages><Draught>10.50</Draught><Persons><Crew>26</Crew></Persons><Links><Link><href>https://portal.rxseaport.eu/ords/prd/zedis/v1/voyage/519908U</href><rel>self</rel></Link><Link><href>https://portal.rxseaport.eu/ords/prd/zedis/v1/stay/519908</href><rel>stay</rel></Link><Link><href>https://portal.rxseaport.eu/ords/prd/zedis/v1/vessel?imo=9397341</href><rel>vessel</rel></Link></Links></Voyage>'
+                Example2:
+                  summary: Example 2
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Voyage VersionMajor="1" VersionMinor="0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:RXZDD"><Number>525635I</Number><Status>Active</Status><Type>IN</Type><Agent>HOPPEZ</Agent><From><Location><Code>BESEA0WEST00AWN</Code><Name>Wandelaar</Name></Location><EstimatedTime>2020-07-29T12:00:00Z</EstimatedTime></From><To><Location><Code>BEBGS0750100967</Code><Name>Brugge Kaai 967</Name></Location><EstimatedTime>2020-07-29T13:30:00Z</EstimatedTime><ActualTime>2020-07-29T14:45:19Z</ActualTime><MooringSide>BB</MooringSide></To><Passages><Passage><LoCode>BEZEE</LoCode><FairwayCode>07503</FairwayCode><Description>STREK</Description><Type>PASSAGE</Type><ActualTime>2020-07-29T13:00:00Z</ActualTime></Passage></Passages><Draught>6.00</Draught><Persons><Crew>7</Crew></Persons><Links><Link><href>https://portal.rxseaport.eu/ords/prd/zedis/v1/voyage/525635I</href><rel>self</rel></Link><Link><href>https://portal.rxseaport.eu/ords/prd/zedis/v1/stay/525635</href><rel>stay</rel></Link><Link><href>https://portal.rxseaport.eu/ords/prd/zedis/v1/vessel?imo=7637448</href><rel>vessel</rel></Link></Links></Voyage>'
+            application/json:
+              examples:
+                Example1:
+                  summary: Example 1
+                  value: '{ "@VersionMajor": 1, "@VersionMinor": 0, "Number": "519908U", "Status": "Cancelled", "Type": "OUT", "Agent": "HOPPEZ", "From": { "Location": { "Code": "BEZEE0750300616", "Name": "BEZEE0750300616" }, "EstimatedTime": "2019-12-27T11:00:00Z" }, "To": { "Location": { "Code": "BESEA0WEST00AWN", "Name": "Wandelaar" } }, "Passages": null, "Draught": 10.50, "Persons": { "Crew": 26 }, "Links": [ { "href": "https://portal.rxseaport.eu/ords/prd/zedis/v1/voyage/519908U", "rel": "self" }, { "href": "https://portal.rxseaport.eu/ords/prd/zedis/v1/stay/519908", "rel": "stay" }, { "href": "https://portal.rxseaport.eu/ords/prd/zedis/v1/vessel?imo=9397341", "rel": "vessel" } ] }'
+                Example2:
+                  summary: Example 2
+                  value: '{ "@VersionMajor": 1, "@VersionMinor": 0, "Number": "525635I", "Status": "Active", "Type": "IN", "Agent": "HOPPEZ", "From": { "Location": { "Code": "BESEA0WEST00AWN", "Name": "Wandelaar" }, "EstimatedTime": "2020-07-29T12:00:00Z" }, "To": { "Location": { "Code": "BEBGS0750100967", "Name": "Brugge Kaai 967" }, "EstimatedTime": "2020-07-29T13:30:00Z", "ActualTime": "2020-07-29T14:45:19Z", "MooringSide": "BB" }, "Passages": { "Passage": { "LoCode": "BEZEE", "FairwayCode": "07503", "Description": "STREK", "Type": "PASSAGE", "ActualTime": "2020-07-29T13:00:00Z" } }, "Draught": 6.00, "Persons": { "Crew": 7 }, "Links": [ { "href": "https://portal.rxseaport.eu/ords/prd/zedis/v1/voyage/525635I", "rel": "self" }, { "href": "https://portal.rxseaport.eu/ords/prd/zedis/v1/stay/525635", "rel": "stay" }, { "href": "https://portal.rxseaport.eu/ords/prd/zedis/v1/vessel?imo=7637448", "rel": "vessel" } ] }'
+        400:
+          description: Bad Request
+          content:
+            application/xml:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>PARAMETER_MISSING</Code><Message>A required input parameter is missing in your request. Please consult the web service documentation.</Message></Error>'
+                MissingData:
+                  summary: Missing Data
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>DATA_MISSING</Code><Message>No data was found for your selection. Please try again with another selection.</Message></Error>'
+            application/json:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '{"Code": "PARAMETER_MISSING","Message": "A required input parameter is missing in your request. Please consult the web service documentation."}'
+                MissingData:
+                  summary: Missing Data
+                  value: '{"Code": "DATA_MISSING","Message": "No data was found for your selection. Please try again with another selection."}'
+        403:
+          description: Unauthorized
+          content:
+            application/xml:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_MISSING</Code><Message>An access token was not supplied. See documentation for details on how to pass your token to the web service.</Message></Error>'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_INVALID</Code><Message>An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token.</Message></Error>'
+                DisabledToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_DISABLED</Code><Message>The supplied token has been disabled. Please contact us for assistance.</Message></Error>'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_EXPIRED</Code><Message>The supplied token is expired. Please contact us for assistance.</Message></Error>'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_UNAUTHORIZED</Code><Message>The supplied token is not authorized to access the given web service. Please contact us for assistance.</Message></Error>'
+            application/json:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '{"Code": "TOKEN_MISSING","Message": "An access token was not supplied. See documentation for details on how to pass your token to the web service."}'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '{"Code": "TOKEN_INVALID","Message": "An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token."}'
+                DisabledToken:
+                  summary: Disabled Token
+                  value: '{"Code": "TOKEN_DISABLED","Message": "The supplied token has been disabled. Please contact us for assistance."}'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '{"Code": "TOKEN_EXPIRED","Message": "The supplied token is expired. Please contact us for assistance."}'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '{"Code": "TOKEN_UNAUTHORIZED","Message": "The supplied token is not authorized to access the given web service. Please contact us for assistance."}'
+        500:
+          description: Error
+          content:
+            application/xml:
+              examples:
+                Error:
+                  summary: Error
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>ORA-XXXXX</Code><Message>Explanation for the error.</Message></Error>'
+            application/json:
+              examples:
+                Error:
+                  summary: Error
+                  value: '{"Code": "ORA-XXXXX","Message": "Explanation for the error."}'
+    delete:
+      tags:
+      - "Voyage"
+      summary: Delete Voyage
+      description: Removes a voyage. If this is an incoming voyage the entire stay gets removed.
+      operationId: deleteVoyage
+      parameters:
+      - name: id
+        in: path
+        description: Voyage Number
+        required: true
+        schema:
+          type: string
+        example: 525635I
+      - name: format
+        in: query
+        description: Response format
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            default: xml
+            enum:
+            - xml
+            - json
+      - name: token
+        in: query
+        description: Authentication token (aka API Key)
+        required: true
+        schema:
+          type: string
+      responses:
+        204:
+          description: Successful operation
+        400:
+          description: Bad Request
+          content:
+            application/xml:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>PARAMETER_MISSING</Code><Message>A required input parameter is missing in your request. Please consult the web service documentation.</Message></Error>'
+            application/json:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '{"Code": "PARAMETER_MISSING","Message": "A required input parameter is missing in your request. Please consult the web service documentation."}'
+        403:
+          description: Unauthorized
+          content:
+            application/xml:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_MISSING</Code><Message>An access token was not supplied. See documentation for details on how to pass your token to the web service.</Message></Error>'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_INVALID</Code><Message>An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token.</Message></Error>'
+                DisabledToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_DISABLED</Code><Message>The supplied token has been disabled. Please contact us for assistance.</Message></Error>'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_EXPIRED</Code><Message>The supplied token is expired. Please contact us for assistance.</Message></Error>'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_UNAUTHORIZED</Code><Message>The supplied token is not authorized to access the given web service. Please contact us for assistance.</Message></Error>'
+            application/json:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '{"Code": "TOKEN_MISSING","Message": "An access token was not supplied. See documentation for details on how to pass your token to the web service."}'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '{"Code": "TOKEN_INVALID","Message": "An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token."}'
+                DisabledToken:
+                  summary: Disabled Token
+                  value: '{"Code": "TOKEN_DISABLED","Message": "The supplied token has been disabled. Please contact us for assistance."}'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '{"Code": "TOKEN_EXPIRED","Message": "The supplied token is expired. Please contact us for assistance."}'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '{"Code": "TOKEN_UNAUTHORIZED","Message": "The supplied token is not authorized to access the given web service. Please contact us for assistance."}'
+        500:
+          description: Error
+          content:
+            application/xml:
+              examples:
+                Error:
+                  summary: Error
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>ORA-XXXXX</Code><Message>Explanation for the error.</Message></Error>'
+            application/json:
+              examples:
+                Error:
+                  summary: Error
+                  value: '{"Code": "ORA-XXXXX","Message": "Explanation for the error."}'
