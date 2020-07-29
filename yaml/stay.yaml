@@ -1,0 +1,136 @@
+openapi: 3.0.1
+info:
+  title: RX/SeaPort Zedis Rest Services
+  description: These rest services are available for vessel and stay information from the Port of Zeebrugge.
+  contact:
+    email: support@rxseaport.eu
+  version: 1.0.0
+externalDocs:
+  description: Find out more about RX/SeaPort
+  url: http://www.rxseaport.eu
+servers:
+- url: https://portal.rxseaport.eu/ords/prd/zedis/v1
+paths:
+  /stay/{id}:
+    get:
+      tags:
+      - "Stay"
+      summary: Stay Info
+      description: Returns detailed information on a passed-in stay number (including its voyages and passages).
+      operationId: getStay
+      parameters:
+      - name: id
+        in: path
+        description: Stay Number
+        required: true
+        schema:
+          type: string
+      - name: format
+        in: query
+        description: Response format
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            default: xml
+            enum:
+            - xml
+            - json
+      - name: token
+        in: query
+        description: Authentication token (aka API Key)
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/xml:
+              examples:
+                Example1:
+                  summary: Example 1
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Stay VersionMajor="1" VersionMinor="0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:RXZDD"><Number>519908</Number><Status>Cancelled</Status><Vessel><Name>AL SADD</Name><IMO>9397341</IMO><MMSI>538003361</MMSI><CallSign>V7QG9</CallSign><Flag><Code>MH</Code><Name>Marshall Islands</Name></Flag><ShipType><Code>1542</Code><Name>LNG Tanker</Name><Description>Tanker designed to carry Liquified Natural Gas (LNG).</Description></ShipType><OverallLength>315.00</OverallLength><OverallBeam>50.03</OverallBeam><MaxDraught>13.62</MaxDraught><GrossTonnage>136980.00</GrossTonnage></Vessel><ETA>2019-12-26T09:37:00Z</ETA><ETD>2019-12-27T11:00:00Z</ETD><Origin><Port><Code>QARLF</Code><Name>Ras Laffan</Name><Coordinates><Latitude>25.93333333</Latitude><Longitude>51.53333333</Longitude></Coordinates><Country><Code>QA</Code><Name>Qatar</Name></Country></Port><ETD>2019-12-07T14:00:00Z</ETD></Origin><Destination><Port><Code>QARLF</Code><Name>Ras Laffan</Name><Coordinates><Latitude>25.93333333</Latitude><Longitude>51.53333333</Longitude></Coordinates><Country><Code>QA</Code><Name>Qatar</Name></Country></Port><ETA>2020-01-10T10:00:00Z</ETA></Destination><Voyages><Voyage><Number>519908I</Number><Sequence>1</Sequence><Type>IN</Type><Agent>HOPPEZ</Agent><From><Location><Code>BESEA0WEST000AZ</Code><Name>BESEA0WEST000AZ</Name></Location><EstimatedTime>2019-12-26T06:37:00Z</EstimatedTime></From><To><Location><Code>BEZEE0750300616</Code><Name>BEZEE0750300616</Name></Location><EstimatedTime>2019-12-26T09:37:00Z</EstimatedTime><MooringSide>SB</MooringSide></To><Passages></Passages><Draught>11.50</Draught><Persons><Crew>26</Crew></Persons></Voyage><Voyage><Number>519908U</Number><Sequence>2</Sequence><Type>OUT</Type><Agent>HOPPEZ</Agent><From><Location><Code>BEZEE0750300616</Code><Name>BEZEE0750300616</Name></Location><EstimatedTime>2019-12-27T11:00:00Z</EstimatedTime></From><To><Location><Code>BESEA0WEST00AWN</Code><Name>Wandelaar</Name></Location></To><Passages></Passages><Draught>10.50</Draught><Persons><Crew>26</Crew></Persons></Voyage></Voyages></Stay>'
+                Example2:
+                  summary: Example 2
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Stay VersionMajor="1" VersionMinor="0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:RXZDD"><Number>522402</Number><Status>Active</Status><Vessel><Name>PRIDE OF BRUGES</Name><IMO>8503797</IMO><MMSI>244387000</MMSI><CallSign>PGJW</CallSign><Flag><Code>NL</Code><Name>Netherlands</Name></Flag><ShipType><Code>1592</Code><Name>Ferry</Name><Description>Vessel designed to ply regularly between two or more ports.</Description></ShipType><OverallLength>179.35</OverallLength><OverallBeam>25.35</OverallBeam><MaxDraught>6.17</MaxDraught><GrossTonnage>31598.00</GrossTonnage></Vessel><ETA>2020-03-20T08:15:00Z</ETA><ATA>2020-03-20T07:48:35Z</ATA><ETD>2020-03-20T18:00:00Z</ETD><Origin><Port><Code>GBHUL</Code><Name>Hull</Name><Coordinates><Latitude>53.73333333</Latitude><Longitude>-.31666667</Longitude></Coordinates><Country><Code>GB</Code><Name>United Kingdom</Name></Country></Port><ETD>2020-03-19T17:30:00Z</ETD></Origin><Destination><Port><Code>GBHUL</Code><Name>Hull</Name><Coordinates><Latitude>53.73333333</Latitude><Longitude>-.31666667</Longitude></Coordinates><Country><Code>GB</Code><Name>United Kingdom</Name></Country></Port><ETA>2020-03-21T07:30:00Z</ETA></Destination><Voyages><Voyage><Number>522402I</Number><Sequence>1</Sequence><Type>IN</Type><Agent>PONSF</Agent><From><Location><Code>BESEA0WEST00AWN</Code><Name>Wandelaar</Name></Location><EstimatedTime>2020-03-20T06:45:00Z</EstimatedTime><ActualTime>2020-03-20T06:55:00Z</ActualTime></From><To><Location><Code>BEZEE0750300107</Code><Name>P&amp;O Ferries (K107)</Name></Location><EstimatedTime>2020-03-20T08:15:00Z</EstimatedTime><ActualTime>2020-03-20T07:48:35Z</ActualTime><MooringSide>SB</MooringSide></To><Passages><Passage><LoCode>BEZEE</LoCode><FairwayCode>07503</FairwayCode><Description>STREK</Description><Type>PASSAGE</Type><ActualTime>2020-03-20T07:36:36Z</ActualTime></Passage></Passages><Draught>6.00</Draught><Persons><Crew>97</Crew><Passengers>33</Passengers></Persons></Voyage><Voyage><Number>522402U</Number><Sequence>2</Sequence><Type>OUT</Type><Agent>PONSF</Agent><From><Location><Code>BEZEE0750300107</Code><Name>P&amp;O Ferries (K107)</Name></Location><EstimatedTime>2020-03-20T18:00:00Z</EstimatedTime><MooringSide>GV</MooringSide></From><To><Location><Code>BESEA0WEST00AWN</Code><Name>Wandelaar</Name></Location></To><Passages></Passages><Draught>6.00</Draught><Persons><Crew>101</Crew></Persons></Voyage></Voyages></Stay>'
+            application/json:
+              examples:
+                Example1:
+                  summary: Example 1
+                  value: '{ "@VersionMajor": 1, "@VersionMinor": 0, "Number": 519908, "Status": "Cancelled", "Vessel": { "Name": "AL SADD", "IMO": 9397341, "MMSI": 538003361, "CallSign": "V7QG9", "Flag": { "Code": "MH", "Name": "Marshall Islands" }, "ShipType": { "Code": 1542, "Name": "LNG Tanker", "Description": "Tanker designed to carry Liquified Natural Gas (LNG)." }, "OverallLength": 315.00, "OverallBeam": 50.03, "MaxDraught": 13.62, "GrossTonnage": 136980.00 }, "ETA": "2019-12-26T09:37:00Z", "ETD": "2019-12-27T11:00:00Z", "Origin": { "Port": { "Code": "QARLF", "Name": "Ras Laffan", "Coordinates": { "Latitude": 25.93333333, "Longitude": 51.53333333 }, "Country": { "Code": "QA", "Name": "Qatar" } }, "ETD": "2019-12-07T14:00:00Z" }, "Destination": { "Port": { "Code": "QARLF", "Name": "Ras Laffan", "Coordinates": { "Latitude": 25.93333333, "Longitude": 51.53333333 }, "Country": { "Code": "QA", "Name": "Qatar" } }, "ETA": "2020-01-10T10:00:00Z" }, "Voyages": [ { "Number": "519908I", "Sequence": 1, "Type": "IN", "Agent": "HOPPEZ", "From": { "Location": { "Code": "BESEA0WEST000AZ", "Name": "BESEA0WEST000AZ" }, "EstimatedTime": "2019-12-26T06:37:00Z" }, "To": { "Location": { "Code": "BEZEE0750300616", "Name": "BEZEE0750300616" }, "EstimatedTime": "2019-12-26T09:37:00Z", "MooringSide": "SB" }, "Passages": null, "Draught": 11.50, "Persons": { "Crew": 26 } }, { "Number": "519908U", "Sequence": 2, "Type": "OUT", "Agent": "HOPPEZ", "From": { "Location": { "Code": "BEZEE0750300616", "Name": "BEZEE0750300616" }, "EstimatedTime": "2019-12-27T11:00:00Z" }, "To": { "Location": { "Code": "BESEA0WEST00AWN", "Name": "Wandelaar" } }, "Passages": null, "Draught": 10.50, "Persons": { "Crew": 26 } } ] }'
+                Example2:
+                  summary: Example 2
+                  value: '{ "@VersionMajor": 1, "@VersionMinor": 0, "Number": 522402, "Status": "Active", "Vessel": { "Name": "PRIDE OF BRUGES", "IMO": 8503797, "MMSI": 244387000, "CallSign": "PGJW", "Flag": { "Code": "NL", "Name": "Netherlands" }, "ShipType": { "Code": 1592, "Name": "Ferry", "Description": "Vessel designed to ply regularly between two or more ports." }, "OverallLength": 179.35, "OverallBeam": 25.35, "MaxDraught": 6.17, "GrossTonnage": 31598.00 }, "ETA": "2020-03-20T08:15:00Z", "ATA": "2020-03-20T07:48:35Z", "ETD": "2020-03-20T18:00:00Z", "Origin": { "Port": { "Code": "GBHUL", "Name": "Hull", "Coordinates": { "Latitude": 53.73333333, "Longitude": -0.31666667 }, "Country": { "Code": "GB", "Name": "United Kingdom" } }, "ETD": "2020-03-19T17:30:00Z" }, "Destination": { "Port": { "Code": "GBHUL", "Name": "Hull", "Coordinates": { "Latitude": 53.73333333, "Longitude": -0.31666667 }, "Country": { "Code": "GB", "Name": "United Kingdom" } }, "ETA": "2020-03-21T07:30:00Z" }, "Voyages": [ { "Number": "522402I", "Sequence": 1, "Type": "IN", "Agent": "PONSF", "From": { "Location": { "Code": "BESEA0WEST00AWN", "Name": "Wandelaar" }, "EstimatedTime": "2020-03-20T06:45:00Z", "ActualTime": "2020-03-20T06:55:00Z" }, "To": { "Location": { "Code": "BEZEE0750300107", "Name": "P&O Ferries (K107)" }, "EstimatedTime": "2020-03-20T08:15:00Z", "ActualTime": "2020-03-20T07:48:35Z", "MooringSide": "SB" }, "Passages": { "Passage": { "LoCode": "BEZEE", "FairwayCode": "07503", "Description": "STREK", "Type": "PASSAGE", "ActualTime": "2020-03-20T07:36:36Z" } }, "Draught": 6.00, "Persons": { "Crew": 97, "Passengers": 33 } }, { "Number": "522402U", "Sequence": 2, "Type": "OUT", "Agent": "PONSF", "From": { "Location": { "Code": "BEZEE0750300107", "Name": "P&O Ferries (K107)" }, "EstimatedTime": "2020-03-20T18:00:00Z", "MooringSide": "GV" }, "To": { "Location": { "Code": "BESEA0WEST00AWN", "Name": "Wandelaar" } }, "Passages": null, "Draught": 6.00, "Persons": { "Crew": 101 } } ]'
+        400:
+          description: Bad Request
+          content:
+            application/xml:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>PARAMETER_MISSING</Code><Message>A required input parameter is missing in your request. Please consult the web service documentation.</Message></Error>'
+                MissingData:
+                  summary: Missing Data
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>DATA_MISSING</Code><Message>No data was found for your selection. Please try again with another selection.</Message></Error>'
+            application/json:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '{"Code": "PARAMETER_MISSING","Message": "A required input parameter is missing in your request. Please consult the web service documentation."}'
+                MissingData:
+                  summary: Missing Data
+                  value: '{"Code": "DATA_MISSING","Message": "No data was found for your selection. Please try again with another selection."}'
+        403:
+          description: Unauthorized
+          content:
+            application/xml:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_MISSING</Code><Message>An access token was not supplied. See documentation for details on how to pass your token to the web service.</Message></Error>'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_INVALID</Code><Message>An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token.</Message></Error>'
+                DisabledToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_DISABLED</Code><Message>The supplied token has been disabled. Please contact us for assistance.</Message></Error>'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_EXPIRED</Code><Message>The supplied token is expired. Please contact us for assistance.</Message></Error>'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_UNAUTHORIZED</Code><Message>The supplied token is not authorized to access the given web service. Please contact us for assistance.</Message></Error>'
+            application/json:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '{"Code": "TOKEN_MISSING","Message": "An access token was not supplied. See documentation for details on how to pass your token to the web service."}'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '{"Code": "TOKEN_INVALID","Message": "An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token."}'
+                DisabledToken:
+                  summary: Disabled Token
+                  value: '{"Code": "TOKEN_DISABLED","Message": "The supplied token has been disabled. Please contact us for assistance."}'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '{"Code": "TOKEN_EXPIRED","Message": "The supplied token is expired. Please contact us for assistance."}'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '{"Code": "TOKEN_UNAUTHORIZED","Message": "The supplied token is not authorized to access the given web service. Please contact us for assistance."}'
+        500:
+          description: Error
+          content:
+            application/xml:
+              examples:
+                Error:
+                  summary: Error
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>ORA-XXXXX</Code><Message>Explanation for the error.</Message></Error>'
+            application/json:
+              examples:
+                Error:
+                  summary: Error
+                  value: '{"Code": "ORA-XXXXX","Message": "Explanation for the error."}'
