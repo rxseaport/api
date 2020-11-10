@@ -1,0 +1,142 @@
+openapi: 3.0.1
+info:
+  title: RX/SeaPort Rest Services
+  description: These rest services are available for the Port of Zeebrugge.
+  contact:
+    email: support@rxseaport.eu
+  version: 1.0.0
+externalDocs:
+  description: Find out more about RX/SeaPort
+  url: http://www.rxseaport.eu
+servers:
+- url: https://portal.rxseaport.eu/ords/prd/dashboard/v1
+paths:
+  /greenlightcheck:
+    get:
+      summary: Get Green Light Check Color
+      description: Returns the green light stateful color for a passed-in unit and/or a passed-in
+        booking reference.
+      operationId: getGreenLightCheck
+      parameters:
+      - name: bookingtype
+        in: query
+        description: Booking Type (E = Export, I = Import)
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            default: E
+            enum:
+            - E
+            - I
+      - name: unit
+        in: query
+        description: Unit identification
+        required: true
+        schema:
+          type: string
+      - name: booking
+        in: query
+        description: Booking reference
+        required: true
+        schema:
+          type: string
+      - name: format
+        in: query
+        description: Response format
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            default: xml
+            enum:
+            - xml
+            - json
+      - name: token
+        in: query
+        description: Authentication token (aka API Key)
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/xml:
+              examples:
+                GreenLight:
+                  summary: Green Light
+                  value: '<GreenLightCheck VersionMajor="1" VersionMinor="0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:RX"><Request><BookingReference>ZE558234</BookingReference><BookingType>EXPORT</BookingType><UnitID>930635</UnitID><Format>XML</Format></Request><Response><Color>u-success</Color></Response></GreenLightCheck>'
+                OrangeLight:
+                  summary: Orange Light
+                  value: '<GreenLightCheck VersionMajor="1" VersionMinor="0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:RX"><Request><BookingReference>ZE928392</BookingReference><BookingType>EXPORT</BookingType><UnitID>1ABC322</UnitID><Format>XML</Format></Request><Response><Color>u-warning</Color></Response></GreenLightCheck>'
+                RedLight:
+                  summary: Red Light
+                  value: '<GreenLightCheck VersionMajor="1" VersionMinor="0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:RX"><Request><BookingReference>53470037/9</BookingReference><BookingType>EXPORT</BookingType><UnitID>930634</UnitID><Format>XML</Format></Request><Response><Color>u-danger</Color></Response></GreenLightCheck>'
+            application/json:
+              examples:
+                GreenLight:
+                  summary: Green Light
+                  value: '{"@VersionMajor": 1,"@VersionMinor": 0,"Request": {"BookingReference": "ZE558234","BookingType": "EXPORT","UnitID": 930635,"Format": "JSON"},"Response": {"Color": "u-success"}}'
+                OrangeLight:
+                  summary: Orange Light
+                  value: '{"@VersionMajor": 1,"@VersionMinor": 0,"Request": {"BookingReference": "ZE928392","BookingType": "EXPORT","UnitID": 1ABC322,"Format": "JSON"},"Response": {"Color": "u-warning"}}'
+                RedLight:
+                  summary: Red Light
+                  value: '{"@VersionMajor": 1,"@VersionMinor": 0,"Request": {"BookingReference": "53470037/9","BookingType": "EXPORT","UnitID": 930634,"Format": "JSON"},"Response": {"Color": "u-danger"}}'
+        403:
+          description: Unauthorized
+          content:
+            application/xml:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_MISSING</Code><Message>An access token was not supplied. See documentation for details on how to pass your token to the web service.</Message></Error>'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_INVALID</Code><Message>An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token.</Message></Error>'
+                DisabledToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_DISABLED</Code><Message>The supplied token has been disabled. Please contact us for assistance.</Message></Error>'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_EXPIRED</Code><Message>The supplied token is expired. Please contact us for assistance.</Message></Error>'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_UNAUTHORIZED</Code><Message>The supplied token is not authorized to access the given web service. Please contact us for assistance.</Message></Error>'
+            application/json:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '{"Code": "TOKEN_MISSING","Message": "An access token was not supplied. See documentation for details on how to pass your token to the web service."}'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '{"Code": "TOKEN_INVALID","Message": "An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token."}'
+                DisabledToken:
+                  summary: Disabled Token
+                  value: '{"Code": "TOKEN_DISABLED","Message": "The supplied token has been disabled. Please contact us for assistance."}'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '{"Code": "TOKEN_EXPIRED","Message": "The supplied token is expired. Please contact us for assistance."}'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '{"Code": "TOKEN_UNAUTHORIZED","Message": "The supplied token is not authorized to access the given web service. Please contact us for assistance."}'
+        500:
+          description: Error
+          content:
+            application/xml:
+              examples:
+                Error:
+                  summary: Error
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>ORA-XXXXX</Code><Message>Explanation for the error.</Message></Error>'
+            application/json:
+              examples:
+                Error:
+                  summary: Error
+                  value: '{"Code": "ORA-XXXXX","Message": "Explanation for the error."}'
