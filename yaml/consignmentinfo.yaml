@@ -1,0 +1,392 @@
+openapi: 3.0.1
+info:
+  title: RX/SeaPort Consignment Info Rest Services
+  description: These rest services provide information on consignments submitted to customs through Customs Cargo Messages (CUSCAR).
+  contact:
+    email: support@rxseaport.eu
+  version: 1.0.0
+externalDocs:
+  description: Find out more about RX/SeaPort
+  url: http://www.rxseaport.eu
+servers:
+- url: https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1
+paths:
+  /bl/{blnumber}/stay/{stayreference}:
+    get:
+      tags:
+      - "Consignment"
+      summary: Get Consignment Details
+      description: Provides consignment details for a passed-in stay reference and bill-of-lading.
+      operationId: getConsignment
+      parameters:
+      - name: blnumber
+        in: path
+        description: Bill-of-lading number
+        required: true
+        schema:
+          type: string
+        example: TL01671083
+      - name: stayreference
+        in: path
+        description: Stay reference
+        required: true
+        schema:
+          type: string
+        example: 530864
+      - name: format
+        in: query
+        description: Response format
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            default: xml
+            enum:
+            - xml
+            - json
+      - name: token
+        in: query
+        description: Authentication token (aka API Key)
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/xml:
+              examples:
+                Example1:
+                  summary: Example 1
+                  value: '<?xml version="1.0" encoding="UTF-8"?><Consignment VersionMajor="1" VersionMinor="0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.rxseaport.eu/consignmentinfo"><BL>TL01671083</BL><Manifest><Number>530864L9186182</Number><Agent Code="P&amp;ONSF">P&amp;O Ferries</Agent><Article>22</Article></Manifest><Stay><Reference>530864</Reference><Vessel><IMO>9186182</IMO><Name>NORSKY</Name><Links><Link><href>https://portal.rxseaport.eu/ords/prd/zedis/v1/vessel?imo=9186182</href><rel>self</rel></Link></Links></Vessel><Arrival>2021-03-03T06:07:07Z</Arrival><Origin Code="GBTIL">Tilbury</Origin><Destination Code="BEZEE">Zeebrugge</Destination><DischargeRTO Code="BEZEE0750300107">P&amp;O Ferries (K107)</DischargeRTO><Links><Link><href>https://portal.rxseaport.eu/ords/prd/zedis/v1/stay/530864</href><rel>self</rel></Link></Links></Stay><Equipments><Equipment><EquipmentID>COOL422</EquipmentID><Qualifier Code="CN">Container</Qualifier><SizeType Code="20G0">20G0</SizeType><Status Code="5">Non-Empty</Status><TransportCondition Code="3">LCL</TransportCondition><Weight>6825</Weight></Equipment></Equipments><Goods><Good><Sequence>1</Sequence><Description>ARALDITE</Description><EquipmentID>COOL422</EquipmentID><Marks>ADDRESSED</Marks><PackType Code="DR">Drum</PackType><PackCount>2</PackCount><Weight>22</Weight><CustomsStatus>T1</CustomsStatus></Good><Good><Sequence>2</Sequence><Description>PRINTING INK</Description><EquipmentID>COOL422</EquipmentID><Marks>ADDRESSED 81189597</Marks><PackType Code="PK">Package</PackType><PackCount>585</PackCount><Weight>585</Weight><CustomsStatus>T1</CustomsStatus></Good><Good><Sequence>3</Sequence><Description>UMBRA</Description><EquipmentID>COOL422</EquipmentID><Marks>ADDRESSED 26518696</Marks><PackType Code="PK">Package</PackType><PackCount>1</PackCount><Weight>1196</Weight><CustomsStatus>T1</CustomsStatus></Good><Good><Sequence>4</Sequence><Description>ABS REEL</Description><EquipmentID>COOL422</EquipmentID><Marks>ADDRESSED 26518885</Marks><PackType Code="PK">Package</PackType><PackCount>3</PackCount><Weight>422</Weight><CustomsStatus>T1</CustomsStatus></Good><Good><Sequence>5</Sequence><Description>SWITCHES</Description><EquipmentID>COOL422</EquipmentID><Marks>ADDRESSED 26518895</Marks><PackType Code="PK">Package</PackType><PackCount>4</PackCount><Weight>939</Weight><CustomsStatus>T1</CustomsStatus></Good><Good><Sequence>6</Sequence><Description>BUOYANCE MODULE</Description><EquipmentID>COOL422</EquipmentID><Marks>ADDRESSED 26518923</Marks><PackType Code="PK">Package</PackType><PackCount>1</PackCount><Weight>688</Weight><CustomsStatus>T1</CustomsStatus></Good><Good><Sequence>7</Sequence><Description>HANDTOOLS</Description><EquipmentID>COOL422</EquipmentID><Marks>ADDRESSED 81189800</Marks><PackType Code="PK">Package</PackType><PackCount>3</PackCount><Weight>1824</Weight><CustomsStatus>T1</CustomsStatus></Good><Good><Sequence>8</Sequence><Description>EYECARE PRODUCTS</Description><EquipmentID>COOL422</EquipmentID><Marks>ADDRESSED 81191453</Marks><PackType Code="PK">Package</PackType><PackCount>4</PackCount><Weight>1149</Weight><CustomsStatus>T1</CustomsStatus></Good></Goods></Consignment>'
+                Example2:
+                  summary: Example 2
+                  value: '<?xml version="1.0" encoding="UTF-8"?><Consignment VersionMajor="1" VersionMinor="0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.rxseaport.eu/consignmentinfo"><BL>TL01670501</BL><Manifest><Number>530864L9186182</Number><Agent Code="P&amp;ONSF">P&amp;O Ferries</Agent><Article>7</Article></Manifest><Stay><Reference>530864</Reference><Vessel><IMO>9186182</IMO><Name>NORSKY</Name><Links><Link><href>https://portal.rxseaport.eu/ords/prd/zedis/v1/vessel?imo=9186182</href><rel>self</rel></Link></Links></Vessel><Arrival>2021-03-03T06:07:07Z</Arrival><Origin Code="GBTIL">Tilbury</Origin><Destination Code="BEZEE">Zeebrugge</Destination><DischargeRTO Code="BEZEE0750300107">P&amp;O Ferries (K107)</DischargeRTO><Links><Link><href>https://portal.rxseaport.eu/ords/prd/zedis/v1/stay/530864</href><rel>self</rel></Link></Links></Stay><Equipments><Equipment><EquipmentID>TLLU1635614</EquipmentID><Qualifier Code="CN">Container</Qualifier><SizeType Code="20G0">20G0</SizeType><Status Code="5">Non-Empty</Status><TransportCondition Code="2">FCL</TransportCondition><Weight>22903</Weight></Equipment></Equipments><Goods><Good><Sequence>1</Sequence><Description>PAPER REELS</Description><EquipmentID>TLLU1635614</EquipmentID><Marks>TLLU1635614/00101</Marks><PackType Code="PK">Package</PackType><PackCount>40</PackCount><Weight>22903</Weight><CustomsStatus>T1</CustomsStatus></Good></Goods></Consignment>'
+            application/json:
+              examples:
+                Example1:
+                  summary: Example 1
+                  value: '{"@VersionMajor":1,"@VersionMinor":0,"BL":"TL01671083","Manifest":{"Number":"530864L9186182","Agent":{"@Code":"P&ONSF","@text":"P&O Ferries"},"Article":22},"Stay":{"Reference":530864,"Vessel":{"IMO":9186182,"Name":"NORSKY","Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/zedis/v1/vessel?imo=9186182","rel":"self"}}},"Arrival":"2021-03-03T06:07:07Z","Origin":{"@Code":"GBTIL","@text":"Tilbury"},"Destination":{"@Code":"BEZEE","@text":"Zeebrugge"},"DischargeRTO":{"@Code":"BEZEE0750300107","@text":"P&O Ferries (K107)"},"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/zedis/v1/stay/530864","rel":"self"}}},"Equipments":{"Equipment":{"EquipmentID":"COOL422","Qualifier":{"@Code":"CN","@text":"Container"},"SizeType":{"@Code":"20G0","@text":"20G0"},"Status":{"@Code":5,"@text":"Non-Empty"},"TransportCondition":{"@Code":3,"@text":"LCL"},"Weight":6825}},"Goods":[{"Sequence":1,"Description":"ARALDITE","EquipmentID":"COOL422","Marks":"ADDRESSED","PackType":{"@Code":"DR","@text":"Drum"},"PackCount":2,"Weight":22,"CustomsStatus":"T1"},{"Sequence":2,"Description":"PRINTING INK","EquipmentID":"COOL422","Marks":"ADDRESSED 81189597","PackType":{"@Code":"PK","@text":"Package"},"PackCount":585,"Weight":585,"CustomsStatus":"T1"},{"Sequence":3,"Description":"UMBRA","EquipmentID":"COOL422","Marks":"ADDRESSED 26518696","PackType":{"@Code":"PK","@text":"Package"},"PackCount":1,"Weight":1196,"CustomsStatus":"T1"},{"Sequence":4,"Description":"ABS REEL","EquipmentID":"COOL422","Marks":"ADDRESSED 26518885","PackType":{"@Code":"PK","@text":"Package"},"PackCount":3,"Weight":422,"CustomsStatus":"T1"},{"Sequence":5,"Description":"SWITCHES","EquipmentID":"COOL422","Marks":"ADDRESSED 26518895","PackType":{"@Code":"PK","@text":"Package"},"PackCount":4,"Weight":939,"CustomsStatus":"T1"},{"Sequence":6,"Description":"BUOYANCE MODULE","EquipmentID":"COOL422","Marks":"ADDRESSED 26518923","PackType":{"@Code":"PK","@text":"Package"},"PackCount":1,"Weight":688,"CustomsStatus":"T1"},{"Sequence":7,"Description":"HANDTOOLS","EquipmentID":"COOL422","Marks":"ADDRESSED 81189800","PackType":{"@Code":"PK","@text":"Package"},"PackCount":3,"Weight":1824,"CustomsStatus":"T1"},{"Sequence":8,"Description":"EYECARE PRODUCTS","EquipmentID":"COOL422","Marks":"ADDRESSED 81191453","PackType":{"@Code":"PK","@text":"Package"},"PackCount":4,"Weight":1149,"CustomsStatus":"T1"}]}'
+                Example2:
+                  summary: Example 2
+                  value: '{"@VersionMajor":1,"@VersionMinor":0,"BL":"TL01670501","Manifest":{"Number":"530864L9186182","Agent":{"@Code":"P&ONSF","@text":"P&O Ferries"},"Article":7},"Stay":{"Reference":530864,"Vessel":{"IMO":9186182,"Name":"NORSKY","Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/zedis/v1/vessel?imo=9186182","rel":"self"}}},"Arrival":"2021-03-03T06:07:07Z","Origin":{"@Code":"GBTIL","@text":"Tilbury"},"Destination":{"@Code":"BEZEE","@text":"Zeebrugge"},"DischargeRTO":{"@Code":"BEZEE0750300107","@text":"P&O Ferries (K107)"},"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/zedis/v1/stay/530864","rel":"self"}}},"Equipments":{"Equipment":{"EquipmentID":"TLLU1635614","Qualifier":{"@Code":"CN","@text":"Container"},"SizeType":{"@Code":"20G0","@text":"20G0"},"Status":{"@Code":5,"@text":"Non-Empty"},"TransportCondition":{"@Code":2,"@text":"FCL"},"Weight":22903}},"Goods":{"Good":{"Sequence":1,"Description":"PAPER REELS","EquipmentID":"TLLU1635614","Marks":"TLLU1635614/00101","PackType":{"@Code":"PK","@text":"Package"},"PackCount":40,"Weight":22903,"CustomsStatus":"T1"}}}'
+        400:
+          description: Bad Request
+          content:
+            application/xml:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>PARAMETER_MISSING</Code><Message>A required input parameter is missing in your request. Please consult the web service documentation.</Message></Error>'
+                MissingData:
+                  summary: Missing Data
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>DATA_MISSING</Code><Message>No data was found for your selection. Please try again with another selection.</Message></Error>'
+            application/json:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '{"Code": "PARAMETER_MISSING","Message": "A required input parameter is missing in your request. Please consult the web service documentation."}'
+                MissingData:
+                  summary: Missing Data
+                  value: '{"Code": "DATA_MISSING","Message": "No data was found for your selection. Please try again with another selection."}'
+        403:
+          description: Unauthorized
+          content:
+            application/xml:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_MISSING</Code><Message>An access token was not supplied. See documentation for details on how to pass your token to the web service.</Message></Error>'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_INVALID</Code><Message>An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token.</Message></Error>'
+                DisabledToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_DISABLED</Code><Message>The supplied token has been disabled. Please contact us for assistance.</Message></Error>'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_EXPIRED</Code><Message>The supplied token is expired. Please contact us for assistance.</Message></Error>'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_UNAUTHORIZED</Code><Message>The supplied token is not authorized to access the given web service. Please contact us for assistance.</Message></Error>'
+            application/json:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '{"Code": "TOKEN_MISSING","Message": "An access token was not supplied. See documentation for details on how to pass your token to the web service."}'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '{"Code": "TOKEN_INVALID","Message": "An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token."}'
+                DisabledToken:
+                  summary: Disabled Token
+                  value: '{"Code": "TOKEN_DISABLED","Message": "The supplied token has been disabled. Please contact us for assistance."}'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '{"Code": "TOKEN_EXPIRED","Message": "The supplied token is expired. Please contact us for assistance."}'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '{"Code": "TOKEN_UNAUTHORIZED","Message": "The supplied token is not authorized to access the given web service. Please contact us for assistance."}'
+        500:
+          description: Error
+          content:
+            application/xml:
+              examples:
+                Error:
+                  summary: Error
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>ORA-XXXXX</Code><Message>Explanation for the error.</Message></Error>'
+            application/json:
+              examples:
+                Error:
+                  summary: Error
+                  value: '{"Code": "ORA-XXXXX","Message": "Explanation for the error."}'
+  /bl/{blnumber}:
+    get:
+      tags:
+      - "Consignment Search"
+      summary: Search Consignment
+      description: Searches for a bill-of-lading number and returns all consignments containing the passed-in character set.
+      operationId: searchConsignmentsByID
+      parameters:
+      - name: blnumber
+        in: path
+        description: Bill-of-lading search string
+        required: true
+        schema:
+          type: string
+        example: TL016710
+      - name: format
+        in: query
+        description: Response format
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            default: xml
+            enum:
+            - xml
+            - json
+      - name: token
+        in: query
+        description: Authentication token (aka API Key)
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/xml:
+              examples:
+                Example1:
+                  summary: Example 1
+                  value: '<?xml version="1.0" encoding="UTF-8"?><Consignments VersionMajor="1" VersionMinor="0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.rxseaport.eu/consignmentinfo"><Consignment><BL>TL01671031</BL><Stay>530863</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671031/stay/530863</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TL01671017</BL><Stay>530864</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671017/stay/530864</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TL01671030</BL><Stay>530864</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671030/stay/530864</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TL01671046</BL><Stay>530864</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671046/stay/530864</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TL01671051</BL><Stay>530864</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671051/stay/530864</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TL01671083</BL><Stay>530864</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671083/stay/530864</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TL01671091</BL><Stay>530864</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671091/stay/530864</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TL01671093</BL><Stay>530864</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671093/stay/530864</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TL01671028</BL><Stay>530866</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671028/stay/530866</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TL01671048</BL><Stay>530866</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671048/stay/530866</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TL01671045</BL><Stay>530867</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671045/stay/530867</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TL01671047</BL><Stay>530867</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671047/stay/530867</href><rel>self</rel></Link></Links></Consignment></Consignments>'
+                Example2:
+                  summary: Example 2
+                  value: '<?xml version="1.0" encoding="UTF-8"?><Consignments VersionMajor="1" VersionMinor="0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.rxseaport.eu/consignmentinfo"><Consignment><BL>TE02485098</BL><Stay>531579</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02485098/stay/531579</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TE02485099</BL><Stay>531579</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02485099/stay/531579</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TE02485097</BL><Stay>531580</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02485097/stay/531580</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TE02485094</BL><Stay>531581</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02485094/stay/531581</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TE02485095</BL><Stay>531581</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02485095/stay/531581</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TE02485096</BL><Stay>531581</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02485096/stay/531581</href><rel>self</rel></Link></Links></Consignment></Consignments>'
+            application/json:
+              examples:
+                Example1:
+                  summary: Example 1
+                  value: '[{"@VersionMajor":1},{"@VersionMinor":0},{"BL":"TL01671031","Stay":530863,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671031/stay/530863","rel":"self"}}},{"BL":"TL01671017","Stay":530864,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671017/stay/530864","rel":"self"}}},{"BL":"TL01671030","Stay":530864,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671030/stay/530864","rel":"self"}}},{"BL":"TL01671046","Stay":530864,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671046/stay/530864","rel":"self"}}},{"BL":"TL01671051","Stay":530864,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671051/stay/530864","rel":"self"}}},{"BL":"TL01671083","Stay":530864,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671083/stay/530864","rel":"self"}}},{"BL":"TL01671091","Stay":530864,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671091/stay/530864","rel":"self"}}},{"BL":"TL01671093","Stay":530864,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671093/stay/530864","rel":"self"}}},{"BL":"TL01671028","Stay":530866,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671028/stay/530866","rel":"self"}}},{"BL":"TL01671048","Stay":530866,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671048/stay/530866","rel":"self"}}},{"BL":"TL01671045","Stay":530867,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671045/stay/530867","rel":"self"}}},{"BL":"TL01671047","Stay":530867,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671047/stay/530867","rel":"self"}}}]'
+                Example2:
+                  summary: Example 2
+                  value: '[{"@VersionMajor":1},{"@VersionMinor":0},{"BL":"TE02485098","Stay":531579,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02485098/stay/531579","rel":"self"}}},{"BL":"TE02485099","Stay":531579,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02485099/stay/531579","rel":"self"}}},{"BL":"TE02485097","Stay":531580,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02485097/stay/531580","rel":"self"}}},{"BL":"TE02485094","Stay":531581,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02485094/stay/531581","rel":"self"}}},{"BL":"TE02485095","Stay":531581,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02485095/stay/531581","rel":"self"}}},{"BL":"TE02485096","Stay":531581,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02485096/stay/531581","rel":"self"}}}]'
+        400:
+          description: Bad Request
+          content:
+            application/xml:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>PARAMETER_MISSING</Code><Message>A required input parameter is missing in your request. Please consult the web service documentation.</Message></Error>'
+                MissingData:
+                  summary: Missing Data
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>DATA_MISSING</Code><Message>No data was found for your selection. Please try again with another selection.</Message></Error>'
+            application/json:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '{"Code": "PARAMETER_MISSING","Message": "A required input parameter is missing in your request. Please consult the web service documentation."}'
+                MissingData:
+                  summary: Missing Data
+                  value: '{"Code": "DATA_MISSING","Message": "No data was found for your selection. Please try again with another selection."}'
+        403:
+          description: Unauthorized
+          content:
+            application/xml:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_MISSING</Code><Message>An access token was not supplied. See documentation for details on how to pass your token to the web service.</Message></Error>'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_INVALID</Code><Message>An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token.</Message></Error>'
+                DisabledToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_DISABLED</Code><Message>The supplied token has been disabled. Please contact us for assistance.</Message></Error>'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_EXPIRED</Code><Message>The supplied token is expired. Please contact us for assistance.</Message></Error>'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_UNAUTHORIZED</Code><Message>The supplied token is not authorized to access the given web service. Please contact us for assistance.</Message></Error>'
+            application/json:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '{"Code": "TOKEN_MISSING","Message": "An access token was not supplied. See documentation for details on how to pass your token to the web service."}'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '{"Code": "TOKEN_INVALID","Message": "An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token."}'
+                DisabledToken:
+                  summary: Disabled Token
+                  value: '{"Code": "TOKEN_DISABLED","Message": "The supplied token has been disabled. Please contact us for assistance."}'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '{"Code": "TOKEN_EXPIRED","Message": "The supplied token is expired. Please contact us for assistance."}'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '{"Code": "TOKEN_UNAUTHORIZED","Message": "The supplied token is not authorized to access the given web service. Please contact us for assistance."}'
+        500:
+          description: Error
+          content:
+            application/xml:
+              examples:
+                Error:
+                  summary: Error
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>ORA-XXXXX</Code><Message>Explanation for the error.</Message></Error>'
+            application/json:
+              examples:
+                Error:
+                  summary: Error
+                  value: '{"Code": "ORA-XXXXX","Message": "Explanation for the error."}'
+  /stay/{stayreference}:
+    get:
+      tags:
+      - "Consignment Search"
+      summary: Stay Consignments
+      description: Returns all consignments for a passed-in stay reference.
+      operationId: searchConsignmentsByStay
+      parameters:
+      - name: stayreference
+        in: path
+        description: Stay Reference
+        required: true
+        schema:
+          type: string
+        example: 530864
+      - name: format
+        in: query
+        description: Response format
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            default: xml
+            enum:
+            - xml
+            - json
+      - name: token
+        in: query
+        description: Authentication token (aka API Key)
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/xml:
+              examples:
+                Example1:
+                  summary: Example 1
+                  value: '<?xml version="1.0" encoding="UTF-8"?><Consignments VersionMajor="1" VersionMinor="0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.rxseaport.eu/consignmentinfo"><Consignment><BL>TL01668832</BL><Stay>530864</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01668832/stay/530864</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TL01670022</BL><Stay>530864</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01670022/stay/530864</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TL01670142</BL><Stay>530864</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01670142/stay/530864</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TL01670214</BL><Stay>530864</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01670214/stay/530864</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TL01670217</BL><Stay>530864</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01670217/stay/530864</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TL01670254</BL><Stay>530864</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01670254/stay/530864</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TL01670501</BL><Stay>530864</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01670501/stay/530864</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TL01670502</BL><Stay>530864</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01670502/stay/530864</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TL01670503</BL><Stay>530864</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01670503/stay/530864</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TL01670505</BL><Stay>530864</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01670505/stay/530864</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TL01670639</BL><Stay>530864</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01670639/stay/530864</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TL01670769</BL><Stay>530864</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01670769/stay/530864</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TL01670770</BL><Stay>530864</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01670770/stay/530864</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TL01670828</BL><Stay>530864</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01670828/stay/530864</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TL01670829</BL><Stay>530864</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01670829/stay/530864</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TL01670830</BL><Stay>530864</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01670830/stay/530864</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TL01670832</BL><Stay>530864</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01670832/stay/530864</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TL01671017</BL><Stay>530864</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671017/stay/530864</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TL01671030</BL><Stay>530864</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671030/stay/530864</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TL01671046</BL><Stay>530864</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671046/stay/530864</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TL01671051</BL><Stay>530864</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671051/stay/530864</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TL01671083</BL><Stay>530864</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671083/stay/530864</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TL01671091</BL><Stay>530864</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671091/stay/530864</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TL01671093</BL><Stay>530864</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671093/stay/530864</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TL01671122</BL><Stay>530864</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671122/stay/530864</href><rel>self</rel></Link></Links></Consignment><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/stay/530864?p=2</href><rel>next</rel></Link></Links></Consignments>'
+                Example2:
+                  summary: Example 2
+                  value: '<?xml version="1.0" encoding="UTF-8"?><Consignments VersionMajor="1" VersionMinor="0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.rxseaport.eu/consignmentinfo"><Consignment><BL>TE02476239</BL><Stay>530648</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476239/stay/530648</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TE02476242</BL><Stay>530648</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476242/stay/530648</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TE02475693</BL><Stay>530648</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02475693/stay/530648</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TE02475907</BL><Stay>530648</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02475907/stay/530648</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TE02476087</BL><Stay>530648</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476087/stay/530648</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TE02476148</BL><Stay>530648</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476148/stay/530648</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TE02476236</BL><Stay>530648</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476236/stay/530648</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TE02476237</BL><Stay>530648</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476237/stay/530648</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TE02476241</BL><Stay>530648</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476241/stay/530648</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TE02476263</BL><Stay>530648</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476263/stay/530648</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TE02476264</BL><Stay>530648</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476264/stay/530648</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TE02476265</BL><Stay>530648</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476265/stay/530648</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TE02476266</BL><Stay>530648</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476266/stay/530648</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TE02476267</BL><Stay>530648</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476267/stay/530648</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TE02476268</BL><Stay>530648</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476268/stay/530648</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TE02476323</BL><Stay>530648</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476323/stay/530648</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TE02476324</BL><Stay>530648</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476324/stay/530648</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TE02476325</BL><Stay>530648</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476325/stay/530648</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TE02476326</BL><Stay>530648</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476326/stay/530648</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TE02476328</BL><Stay>530648</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476328/stay/530648</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TE02476330</BL><Stay>530648</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476330/stay/530648</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TE02476331</BL><Stay>530648</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476331/stay/530648</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TE02476332</BL><Stay>530648</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476332/stay/530648</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TE02476362</BL><Stay>530648</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476362/stay/530648</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TE02476363</BL><Stay>530648</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476363/stay/530648</href><rel>self</rel></Link></Links></Consignment><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/stay/530648?p=2</href><rel>next</rel></Link></Links></Consignments>'
+            application/json:
+              examples:
+                Example1:
+                  summary: Example 1
+                  value: '{"@VersionMajor":1,"@VersionMinor":0,"Consignment":{"BL":"TL01668832","Stay":530864,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01668832/stay/530864","rel":"self"}}},"Consignment":{"BL":"TL01670022","Stay":530864,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01670022/stay/530864","rel":"self"}}},"Consignment":{"BL":"TL01670142","Stay":530864,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01670142/stay/530864","rel":"self"}}},"Consignment":{"BL":"TL01670214","Stay":530864,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01670214/stay/530864","rel":"self"}}},"Consignment":{"BL":"TL01670217","Stay":530864,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01670217/stay/530864","rel":"self"}}},"Consignment":{"BL":"TL01670254","Stay":530864,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01670254/stay/530864","rel":"self"}}},"Consignment":{"BL":"TL01670501","Stay":530864,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01670501/stay/530864","rel":"self"}}},"Consignment":{"BL":"TL01670502","Stay":530864,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01670502/stay/530864","rel":"self"}}},"Consignment":{"BL":"TL01670503","Stay":530864,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01670503/stay/530864","rel":"self"}}},"Consignment":{"BL":"TL01670505","Stay":530864,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01670505/stay/530864","rel":"self"}}},"Consignment":{"BL":"TL01670639","Stay":530864,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01670639/stay/530864","rel":"self"}}},"Consignment":{"BL":"TL01670769","Stay":530864,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01670769/stay/530864","rel":"self"}}},"Consignment":{"BL":"TL01670770","Stay":530864,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01670770/stay/530864","rel":"self"}}},"Consignment":{"BL":"TL01670828","Stay":530864,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01670828/stay/530864","rel":"self"}}},"Consignment":{"BL":"TL01670829","Stay":530864,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01670829/stay/530864","rel":"self"}}},"Consignment":{"BL":"TL01670830","Stay":530864,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01670830/stay/530864","rel":"self"}}},"Consignment":{"BL":"TL01670832","Stay":530864,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01670832/stay/530864","rel":"self"}}},"Consignment":{"BL":"TL01671017","Stay":530864,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671017/stay/530864","rel":"self"}}},"Consignment":{"BL":"TL01671030","Stay":530864,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671030/stay/530864","rel":"self"}}},"Consignment":{"BL":"TL01671046","Stay":530864,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671046/stay/530864","rel":"self"}}},"Consignment":{"BL":"TL01671051","Stay":530864,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671051/stay/530864","rel":"self"}}},"Consignment":{"BL":"TL01671083","Stay":530864,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671083/stay/530864","rel":"self"}}},"Consignment":{"BL":"TL01671091","Stay":530864,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671091/stay/530864","rel":"self"}}},"Consignment":{"BL":"TL01671093","Stay":530864,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671093/stay/530864","rel":"self"}}},"Consignment":{"BL":"TL01671122","Stay":530864,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TL01671122/stay/530864","rel":"self"}}},"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/stay/530864?p=2","rel":"next"}}}'
+                Example2:
+                  summary: Example 2
+                  value: '{"@VersionMajor":1,"@VersionMinor":0,"Consignment":{"BL":"TE02476239","Stay":530648,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476239/stay/530648","rel":"self"}}},"Consignment":{"BL":"TE02476242","Stay":530648,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476242/stay/530648","rel":"self"}}},"Consignment":{"BL":"TE02475693","Stay":530648,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02475693/stay/530648","rel":"self"}}},"Consignment":{"BL":"TE02475907","Stay":530648,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02475907/stay/530648","rel":"self"}}},"Consignment":{"BL":"TE02476087","Stay":530648,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476087/stay/530648","rel":"self"}}},"Consignment":{"BL":"TE02476148","Stay":530648,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476148/stay/530648","rel":"self"}}},"Consignment":{"BL":"TE02476236","Stay":530648,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476236/stay/530648","rel":"self"}}},"Consignment":{"BL":"TE02476237","Stay":530648,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476237/stay/530648","rel":"self"}}},"Consignment":{"BL":"TE02476241","Stay":530648,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476241/stay/530648","rel":"self"}}},"Consignment":{"BL":"TE02476263","Stay":530648,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476263/stay/530648","rel":"self"}}},"Consignment":{"BL":"TE02476264","Stay":530648,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476264/stay/530648","rel":"self"}}},"Consignment":{"BL":"TE02476265","Stay":530648,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476265/stay/530648","rel":"self"}}},"Consignment":{"BL":"TE02476266","Stay":530648,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476266/stay/530648","rel":"self"}}},"Consignment":{"BL":"TE02476267","Stay":530648,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476267/stay/530648","rel":"self"}}},"Consignment":{"BL":"TE02476268","Stay":530648,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476268/stay/530648","rel":"self"}}},"Consignment":{"BL":"TE02476323","Stay":530648,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476323/stay/530648","rel":"self"}}},"Consignment":{"BL":"TE02476324","Stay":530648,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476324/stay/530648","rel":"self"}}},"Consignment":{"BL":"TE02476325","Stay":530648,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476325/stay/530648","rel":"self"}}},"Consignment":{"BL":"TE02476326","Stay":530648,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476326/stay/530648","rel":"self"}}},"Consignment":{"BL":"TE02476328","Stay":530648,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476328/stay/530648","rel":"self"}}},"Consignment":{"BL":"TE02476330","Stay":530648,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476330/stay/530648","rel":"self"}}},"Consignment":{"BL":"TE02476331","Stay":530648,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476331/stay/530648","rel":"self"}}},"Consignment":{"BL":"TE02476332","Stay":530648,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476332/stay/530648","rel":"self"}}},"Consignment":{"BL":"TE02476362","Stay":530648,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476362/stay/530648","rel":"self"}}},"Consignment":{"BL":"TE02476363","Stay":530648,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02476363/stay/530648","rel":"self"}}},"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/stay/530648?p=2","rel":"next"}}}'
+        400:
+          description: Bad Request
+          content:
+            application/xml:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>PARAMETER_MISSING</Code><Message>A required input parameter is missing in your request. Please consult the web service documentation.</Message></Error>'
+                MissingData:
+                  summary: Missing Data
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>DATA_MISSING</Code><Message>No data was found for your selection. Please try again with another selection.</Message></Error>'
+            application/json:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '{"Code": "PARAMETER_MISSING","Message": "A required input parameter is missing in your request. Please consult the web service documentation."}'
+                MissingData:
+                  summary: Missing Data
+                  value: '{"Code": "DATA_MISSING","Message": "No data was found for your selection. Please try again with another selection."}'
+        403:
+          description: Unauthorized
+          content:
+            application/xml:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_MISSING</Code><Message>An access token was not supplied. See documentation for details on how to pass your token to the web service.</Message></Error>'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_INVALID</Code><Message>An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token.</Message></Error>'
+                DisabledToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_DISABLED</Code><Message>The supplied token has been disabled. Please contact us for assistance.</Message></Error>'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_EXPIRED</Code><Message>The supplied token is expired. Please contact us for assistance.</Message></Error>'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_UNAUTHORIZED</Code><Message>The supplied token is not authorized to access the given web service. Please contact us for assistance.</Message></Error>'
+            application/json:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '{"Code": "TOKEN_MISSING","Message": "An access token was not supplied. See documentation for details on how to pass your token to the web service."}'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '{"Code": "TOKEN_INVALID","Message": "An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token."}'
+                DisabledToken:
+                  summary: Disabled Token
+                  value: '{"Code": "TOKEN_DISABLED","Message": "The supplied token has been disabled. Please contact us for assistance."}'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '{"Code": "TOKEN_EXPIRED","Message": "The supplied token is expired. Please contact us for assistance."}'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '{"Code": "TOKEN_UNAUTHORIZED","Message": "The supplied token is not authorized to access the given web service. Please contact us for assistance."}'
+        500:
+          description: Error
+          content:
+            application/xml:
+              examples:
+                Error:
+                  summary: Error
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>ORA-XXXXX</Code><Message>Explanation for the error.</Message></Error>'
+            application/json:
+              examples:
+                Error:
+                  summary: Error
+                  value: '{"Code": "ORA-XXXXX","Message": "Explanation for the error."}'
