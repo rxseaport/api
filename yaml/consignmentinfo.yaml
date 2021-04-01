@@ -189,9 +189,6 @@ paths:
                 Example2:
                   summary: Example 2
                   value: '<?xml version="1.0" encoding="UTF-8"?><Consignments VersionMajor="1" VersionMinor="0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.rxseaport.eu/consignmentinfo"><Consignment><BL>TE02485098</BL><Stay>531579</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02485098/stay/531579</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TE02485099</BL><Stay>531579</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02485099/stay/531579</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TE02485097</BL><Stay>531580</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02485097/stay/531580</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TE02485094</BL><Stay>531581</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02485094/stay/531581</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TE02485095</BL><Stay>531581</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02485095/stay/531581</href><rel>self</rel></Link></Links></Consignment><Consignment><BL>TE02485096</BL><Stay>531581</Stay><Links><Link><href>https://portal.rxseaport.eu/ords/prd/consignmentinfo/v1/bl/TE02485096/stay/531581</href><rel>self</rel></Link></Links></Consignment></Consignments>'
-                Example3:
-                  summary: Example 3
-                  externalValue: 'https://github.com/rxseaport/api/blob/master/yaml/examples/consignments.example.1.xml'
             application/json:
               examples:
                 Example1:
