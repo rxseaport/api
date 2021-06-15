@@ -266,6 +266,124 @@ paths:
                 Error:
                   summary: Error
                   value: '{"Code": "ORA-XXXXX","Message": "Explanation for the error."}'
+  /stays:
+    get:
+      tags:
+      - "Stays"
+      summary: Search Stays
+      description: Lists all stays modified in the defined timeframe (seconds).
+      operationId: getStays
+      parameters:
+      - name: age
+        in: query
+        description: Change Timeframe (Seconds)
+        required: true
+        schema:
+          type: int
+        example: 3600
+      - name: format
+        in: query
+        description: Response format
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            default: xml
+            enum:
+            - xml
+            - json
+      - name: token
+        in: query
+        description: Authentication token (aka API Key)
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/xml:
+              examples:
+                Example1:
+                  summary: Example
+                  value: '<?xml version="1.0" encoding="UTF-8"?><Stays VersionMajor="1" VersionMinor="0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:RXZDD"><Stay><Number>533646</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/zedis/v1/stay/533646</href><rel>self</rel></Link></Links></Stay><Stay><Number>533811</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/zedis/v1/stay/533811</href><rel>self</rel></Link></Links></Stay><Stay><Number>533722</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/zedis/v1/stay/533722</href><rel>self</rel></Link></Links></Stay><Stay><Number>533177</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/zedis/v1/stay/533177</href><rel>self</rel></Link></Links></Stay><Stay><Number>533845</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/zedis/v1/stay/533845</href><rel>self</rel></Link></Links></Stay><Stay><Number>533725</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/zedis/v1/stay/533725</href><rel>self</rel></Link></Links></Stay><Stay><Number>533846</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/zedis/v1/stay/533846</href><rel>self</rel></Link></Links></Stay><Stay><Number>533408</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/zedis/v1/stay/533408</href><rel>self</rel></Link></Links></Stay></Stays>'
+            application/json:
+              examples:
+                Example1:
+                  summary: Example
+                  value: '{ "@VersionMajor": 1 }, { "@VersionMinor": 0 }, { "Number": 533646, "Links": { "Link": { "href": "https://portal.rxseaport.eu/ords/prd/zedis/v1/stay/533646", "rel": "self" } } }, { "Number": 533811, "Links": { "Link": { "href": "https://portal.rxseaport.eu/ords/prd/zedis/v1/stay/533811", "rel": "self" } } }, { "Number": 533722, "Links": { "Link": { "href": "https://portal.rxseaport.eu/ords/prd/zedis/v1/stay/533722", "rel": "self" } } }, { "Number": 533177, "Links": { "Link": { "href": "https://portal.rxseaport.eu/ords/prd/zedis/v1/stay/533177", "rel": "self" } } }, { "Number": 533845, "Links": { "Link": { "href": "https://portal.rxseaport.eu/ords/prd/zedis/v1/stay/533845", "rel": "self" } } }, { "Number": 533725, "Links": { "Link": { "href": "https://portal.rxseaport.eu/ords/prd/zedis/v1/stay/533725", "rel": "self" } } }, { "Number": 533846, "Links": { "Link": { "href": "https://portal.rxseaport.eu/ords/prd/zedis/v1/stay/533846", "rel": "self" } } }, { "Number": 533408, "Links": { "Link": { "href": "https://portal.rxseaport.eu/ords/prd/zedis/v1/stay/533408", "rel": "self" } } }'
+        400:
+          description: Bad Request
+          content:
+            application/xml:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>PARAMETER_MISSING</Code><Message>A required input parameter is missing in your request. Please consult the web service documentation.</Message></Error>'
+                MissingData:
+                  summary: Missing Data
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>DATA_MISSING</Code><Message>No data was found for your selection. Please try again with another selection.</Message></Error>'
+            application/json:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '{"Code": "PARAMETER_MISSING","Message": "A required input parameter is missing in your request. Please consult the web service documentation."}'
+                MissingData:
+                  summary: Missing Data
+                  value: '{"Code": "DATA_MISSING","Message": "No data was found for your selection. Please try again with another selection."}'
+        403:
+          description: Unauthorized
+          content:
+            application/xml:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_MISSING</Code><Message>An access token was not supplied. See documentation for details on how to pass your token to the web service.</Message></Error>'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_INVALID</Code><Message>An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token.</Message></Error>'
+                DisabledToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_DISABLED</Code><Message>The supplied token has been disabled. Please contact us for assistance.</Message></Error>'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_EXPIRED</Code><Message>The supplied token is expired. Please contact us for assistance.</Message></Error>'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_UNAUTHORIZED</Code><Message>The supplied token is not authorized to access the given web service. Please contact us for assistance.</Message></Error>'
+            application/json:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '{"Code": "TOKEN_MISSING","Message": "An access token was not supplied. See documentation for details on how to pass your token to the web service."}'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '{"Code": "TOKEN_INVALID","Message": "An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token."}'
+                DisabledToken:
+                  summary: Disabled Token
+                  value: '{"Code": "TOKEN_DISABLED","Message": "The supplied token has been disabled. Please contact us for assistance."}'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '{"Code": "TOKEN_EXPIRED","Message": "The supplied token is expired. Please contact us for assistance."}'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '{"Code": "TOKEN_UNAUTHORIZED","Message": "The supplied token is not authorized to access the given web service. Please contact us for assistance."}'
+        500:
+          description: Error
+          content:
+            application/xml:
+              examples:
+                Error:
+                  summary: Error
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>ORA-XXXXX</Code><Message>Explanation for the error.</Message></Error>'
+            application/json:
+              examples:
+                Error:
+                  summary: Error
+                  value: '{"Code": "ORA-XXXXX","Message": "Explanation for the error."}'
   /stay/{id}:
     get:
       tags:
