@@ -1,0 +1,532 @@
+openapi: 3.0.1
+info:
+  title: RX/SeaPort Message Center Rest Services
+  description: These rest services provide tools to add and retrieve messages from the Message Center.
+  contact:
+    email: support@rxseaport.eu
+  version: 1.0.0
+externalDocs:
+  description: Find out more about RX/SeaPort
+  url: http://www.rxseaport.eu
+servers:
+- url: https://portal.rxseaport.eu/ords/tst/messagecenter/v1
+  description: Test Environment
+- url: https://portal.rxseaport.eu/ords/prd/messagecenter/v1
+  description: Production Environment
+paths:
+  /message:
+    post:
+      tags:
+      - "Message"
+      summary: Add Message
+      description: Sends a new message to the message center. The body of this call contains your message.
+      operationId: postMessage
+      parameters:
+      - name: token
+        in: query
+        description: Authentication token (aka API Key)
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Message
+        required: true
+        content:
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/GenericMessage'
+      responses:
+        204:
+          description: Success
+        400:
+          description: Bad Request
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                MissingParameter:
+                  $ref: '#/components/examples/400MissingParameter'
+                InvalidParameter:
+                  $ref: '#/components/examples/400InvalidParameter'
+                MissingData:
+                  $ref: '#/components/examples/400MissingData'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                MissingParameter:
+                  $ref: '#/components/examples/400MissingParameter'
+                InvalidParameter:
+                  $ref: '#/components/examples/400InvalidParameter'
+                MissingData:
+                  $ref: '#/components/examples/400MissingData'
+        403:
+          description: Unauthorized
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                MissingToken:
+                  $ref: '#/components/examples/403MissingToken'
+                InvalidToken:
+                  $ref: '#/components/examples/403InvalidToken'
+                DisabledToken:
+                  $ref: '#/components/examples/403DisabledToken'
+                ExpiredToken:
+                  $ref: '#/components/examples/403ExpiredToken'
+                UnauthorizedToken:
+                  $ref: '#/components/examples/403UnauthorizedToken'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                MissingToken:
+                  $ref: '#/components/examples/403MissingToken'
+                InvalidToken:
+                  $ref: '#/components/examples/403InvalidToken'
+                DisabledToken:
+                  $ref: '#/components/examples/403DisabledToken'
+                ExpiredToken:
+                  $ref: '#/components/examples/403ExpiredToken'
+                UnauthorizedToken:
+                  $ref: '#/components/examples/403UnauthorizedToken'
+        500:
+          description: Application Error
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Error:
+                  $ref: '#/components/examples/500ApplicationError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Error:
+                  $ref: '#/components/examples/500ApplicationError'
+  /message/{id}:
+    get:
+      tags:
+      - "Message"
+      summary: Message Details
+      description: Provides the message for the passed-in identifier.
+      operationId: getMessage
+      parameters:
+      - name: id
+        in: path
+        description: Message identifier
+        required: true
+        schema:
+          type: integer
+          format: int64
+        example: 17384852
+      - name: token
+        in: query
+        description: Authentication token (aka API Key)
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Success
+        400:
+          description: Bad Request
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                MissingParameter:
+                  $ref: '#/components/examples/400MissingParameter'
+                InvalidParameter:
+                  $ref: '#/components/examples/400InvalidParameter'
+                MissingData:
+                  $ref: '#/components/examples/400MissingData'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                MissingParameter:
+                  $ref: '#/components/examples/400MissingParameter'
+                InvalidParameter:
+                  $ref: '#/components/examples/400InvalidParameter'
+                MissingData:
+                  $ref: '#/components/examples/400MissingData'
+        403:
+          description: Unauthorized
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                MissingToken:
+                  $ref: '#/components/examples/403MissingToken'
+                InvalidToken:
+                  $ref: '#/components/examples/403InvalidToken'
+                DisabledToken:
+                  $ref: '#/components/examples/403DisabledToken'
+                ExpiredToken:
+                  $ref: '#/components/examples/403ExpiredToken'
+                UnauthorizedToken:
+                  $ref: '#/components/examples/403UnauthorizedToken'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                MissingToken:
+                  $ref: '#/components/examples/403MissingToken'
+                InvalidToken:
+                  $ref: '#/components/examples/403InvalidToken'
+                DisabledToken:
+                  $ref: '#/components/examples/403DisabledToken'
+                ExpiredToken:
+                  $ref: '#/components/examples/403ExpiredToken'
+                UnauthorizedToken:
+                  $ref: '#/components/examples/403UnauthorizedToken'
+        500:
+          description: Application Error
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Error:
+                  $ref: '#/components/examples/500ApplicationError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Error:
+                  $ref: '#/components/examples/500ApplicationError'
+  /message/{id}/validate:
+    put:
+      tags:
+      - "Message"
+      summary: Validate Message
+      description: Marks a message as processed so it does it is removed from the message queue. Be sure to always validate all picked up messages.
+      operationId: validateMessage
+      parameters:
+      - name: id
+        in: path
+        description: Message identifier
+        required: true
+        schema:
+          type: integer
+          format: int64
+        example: 17384852
+      - name: token
+        in: query
+        description: Authentication token (aka API Key)
+        required: true
+        schema:
+          type: string
+      responses:
+        204:
+          description: Success
+        400:
+          description: Bad Request
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                MissingParameter:
+                  $ref: '#/components/examples/400MissingParameter'
+                InvalidParameter:
+                  $ref: '#/components/examples/400InvalidParameter'
+                MissingData:
+                  $ref: '#/components/examples/400MissingData'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                MissingParameter:
+                  $ref: '#/components/examples/400MissingParameter'
+                InvalidParameter:
+                  $ref: '#/components/examples/400InvalidParameter'
+                MissingData:
+                  $ref: '#/components/examples/400MissingData'
+        403:
+          description: Unauthorized
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                MissingToken:
+                  $ref: '#/components/examples/403MissingToken'
+                InvalidToken:
+                  $ref: '#/components/examples/403InvalidToken'
+                DisabledToken:
+                  $ref: '#/components/examples/403DisabledToken'
+                ExpiredToken:
+                  $ref: '#/components/examples/403ExpiredToken'
+                UnauthorizedToken:
+                  $ref: '#/components/examples/403UnauthorizedToken'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                MissingToken:
+                  $ref: '#/components/examples/403MissingToken'
+                InvalidToken:
+                  $ref: '#/components/examples/403InvalidToken'
+                DisabledToken:
+                  $ref: '#/components/examples/403DisabledToken'
+                ExpiredToken:
+                  $ref: '#/components/examples/403ExpiredToken'
+                UnauthorizedToken:
+                  $ref: '#/components/examples/403UnauthorizedToken'
+        500:
+          description: Application Error
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Error:
+                  $ref: '#/components/examples/500ApplicationError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Error:
+                  $ref: '#/components/examples/500ApplicationError'
+  /messages:
+    get:
+      tags:
+      - Messages
+      summary: Get Message Queue
+      description: Lists all messages available for pick-up. Note that this rest service will only return the oldest 500 messages. You are responsible for cleaning up the list by validating the messages you have succesfully picked up.
+      operationId: listMessages
+      parameters:
+      - name: format
+        in: query
+        description: Response format
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            default: xml
+            enum:
+            - xml
+            - json
+      - name: token
+        in: query
+        description: Authentication token (aka API Key)
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageList'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/MessageList'
+        400:
+          description: Bad Request
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                MissingParameter:
+                  $ref: '#/components/examples/400MissingParameter'
+                InvalidParameter:
+                  $ref: '#/components/examples/400InvalidParameter'
+                MissingData:
+                  $ref: '#/components/examples/400MissingData'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                MissingParameter:
+                  $ref: '#/components/examples/400MissingParameter'
+                InvalidParameter:
+                  $ref: '#/components/examples/400InvalidParameter'
+                MissingData:
+                  $ref: '#/components/examples/400MissingData'
+        403:
+          description: Unauthorized
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                MissingToken:
+                  $ref: '#/components/examples/403MissingToken'
+                InvalidToken:
+                  $ref: '#/components/examples/403InvalidToken'
+                DisabledToken:
+                  $ref: '#/components/examples/403DisabledToken'
+                ExpiredToken:
+                  $ref: '#/components/examples/403ExpiredToken'
+                UnauthorizedToken:
+                  $ref: '#/components/examples/403UnauthorizedToken'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                MissingToken:
+                  $ref: '#/components/examples/403MissingToken'
+                InvalidToken:
+                  $ref: '#/components/examples/403InvalidToken'
+                DisabledToken:
+                  $ref: '#/components/examples/403DisabledToken'
+                ExpiredToken:
+                  $ref: '#/components/examples/403ExpiredToken'
+                UnauthorizedToken:
+                  $ref: '#/components/examples/403UnauthorizedToken'
+        500:
+          description: Application Error
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Error:
+                  $ref: '#/components/examples/500ApplicationError'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Error:
+                  $ref: '#/components/examples/500ApplicationError'
+components:
+  schemas:
+    MessageList:
+      type: object
+      xml:
+        namespace: 'http://www.rxseaport.eu/messagecenter'
+        name: Messages
+      properties:
+        "@VersionMajor":
+          type: integer
+          enum: [1]
+          xml:
+            attribute: true
+            name: VersionMajor
+        "@VersionMinor":
+          type: integer
+          enum: [0]
+          xml:
+            attribute: true
+            name: VersionMinor
+        Messages:
+          type: array
+          xml:
+            name: Message
+          items:
+            $ref: '#/components/schemas/MessageSummary'
+    MessageSummary:
+      type: object
+      properties:
+        ID:
+          type: integer
+          example:
+            17384852
+        Type:
+          type: string
+          example:
+            'RX.RESPONSE'
+        Format:
+          type: string
+          example:
+            'XML'
+        Reference:
+          type: string
+          example:
+            'RXS000000000017384852'
+        Links:
+          type: array
+          xml:
+            wrapped: true
+            name: Links
+          items:
+            $ref: '#/components/schemas/Link'
+          example:
+            - href: 'https://portal.rxseaport.eu/ords/prd/messagecenter/v1/message/17384852'
+              rel: 'self'
+            - href: 'https://portal.rxseaport.eu/ords/prd/messagecenter/v1/message/17384852/validate'
+              rel: 'validate'
+    Link:
+      type: object
+      xml:
+        name: 'Link'
+      properties:
+        href:
+          type: string
+          example:
+            'https://portal.rxseaport.eu/ords/prd/messagecenter/message/17384938'
+        rel:
+          type: string
+          example:
+            'self'
+    Error:
+      type: object
+      properties:
+        Code:
+          type: string
+        Message:
+          type: string
+    GenericMessage:
+      type: object
+      xml:
+        namespace: 'some:namespace'
+        name: Root
+  examples:
+    400MissingData:
+      summary: Missing Data
+      value:
+        Code: 'DATA_MISSING'
+        Message: 'No data was found for your selection. Please try again with another selection.'
+    400InvalidParameter:
+      summary: Invalid Parameter
+      value:
+        Code: 'PARAMETER_INVALID'
+        Message: 'The value for a passed-in parameter is invalid. Please consult the web service documentation.'
+    400MissingParameter:
+      summary: Missing Parameter
+      value:
+        Code: 'PARAMETER_MISSING'
+        Message: 'A required input parameter is missing in your request. Please consult the web service documentation.'
+    403DisabledToken:
+      summary: Disabled Token
+      value:
+        Code: 'TOKEN_DISABLED'
+        Message: 'The supplied token has been disabled. Please contact us for assistance.'
+    403ExpiredToken:
+      summary: Expired Token
+      value:
+        Code: 'TOKEN_EXPIRED'
+        Message: 'The supplied token is expired. Please contact us for assistance.'
+    403InvalidToken:
+      summary: Invalid Token
+      value:
+        Code: 'TOKEN_INVALID'
+        Message: 'An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token.'
+    403MissingToken:
+      summary: Missing Token
+      value:
+        Code: 'TOKEN_MISSING'
+        Message: 'An access token was not supplied. See documentation for details on how to pass your token to the web service.'
+    403UnauthorizedToken:
+      summary: Unauthorized Token
+      value:
+        Code: 'TOKEN_UNAUTHORIZED'
+        Message: 'The supplied token is not authorized to access the given web service. Please contact us for assistance.'
+    500ApplicationError:
+      summary: Application Error
+      value:
+        Code: 'ORA-XXXXX'
+        Message: 'Explanation for the error.'
