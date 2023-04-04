@@ -1,0 +1,822 @@
+openapi: 3.0.1
+info:
+  title: RX/SeaPort Ensor Rest Services
+  description: These rest services are available for the Ensor information Ostend Port.
+  contact:
+    email: support@rxseaport.eu
+  version: 1.0.0
+externalDocs:
+  description: Find out more about RX/SeaPort
+  url: http://www.rxseaport.eu
+servers:
+- url: https://portal.rxseaport.eu/ords/prd/ensor/v1
+paths:
+  /vessels:
+    get:
+      tags:
+      - "Vessels"
+      summary: Search Vessels
+      description: Lists all vessels for a passed-in search string.
+      operationId: getVessels
+      parameters:
+      - name: search
+        in: query
+        description: Search String
+        required: false
+        schema:
+          type: string
+        example: mareel
+      - name: format
+        in: query
+        description: Response format
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            default: xml
+            enum:
+            - xml
+            - json
+      - name: token
+        in: query
+        description: Authentication token (aka API Key)
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/xml:
+              examples:
+                Example1:
+                  summary: Example 1
+                  value: '<?xml version="1.0" encoding="UTF-8"?><Vessels VersionMajor="1" VersionMinor="0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:RXZDD"><Vessel><Name>NJORD WIND</Name><IMO>9858814</IMO><MMSI>232023506</MMSI><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/vessel?imo=9858814</href><rel>self</rel></Link></Links></Vessel><Vessel><Name>NJORD KITTIWAKE</Name><MMSI>235095774</MMSI><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/vessel?mmsi=235095774</href><rel>self</rel></Link></Links></Vessel><Vessel><Name>NJORD CURLEW</Name><MMSI>235095775</MMSI><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/vessel?mmsi=235095775</href><rel>self</rel></Link></Links></Vessel><Vessel><Name>NJORD BALDER</Name><IMO>9768629</IMO><MMSI>235116577</MMSI><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/vessel?imo=9768629</href><rel>self</rel></Link></Links></Vessel><Vessel><Name>NJORD SNIPE</Name><MMSI>235103431</MMSI><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/vessel?mmsi=235103431</href><rel>self</rel></Link></Links></Vessel><Vessel><Name>NJORD ZENITH</Name><IMO>9828601</IMO><MMSI>232013230</MMSI><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/vessel?imo=9828601</href><rel>self</rel></Link></Links></Vessel><Vessel><Name>NJORD AVOCET</Name><IMO>8355920</IMO><MMSI>235095773</MMSI><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/vessel?imo=8355920</href><rel>self</rel></Link></Links></Vessel></Vessels>'
+                Example2:
+                  summary: Example 2
+                  value: '<?xml version="1.0" encoding="UTF-8"?><Vessels VersionMajor="1" VersionMinor="0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:RXZDD"><Vessel><Name>MAREEL VERDIGRIS</Name><IMO>9787065</IMO><MMSI>235102691</MMSI><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/vessel?imo=9787065</href><rel>self</rel></Link></Links></Vessel><Vessel><Name>MAREEL TURQUOISE</Name><IMO>9714367</IMO><MMSI>235096275</MMSI><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/vessel?imo=9714367</href><rel>self</rel></Link></Links></Vessel><Vessel><Name>MAREEL ONYX</Name><MMSI>235086358</MMSI><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/vessel?mmsi=235086358</href><rel>self</rel></Link></Links></Vessel><Vessel><Name>MAREEL VIOLET</Name><IMO>9787053</IMO><MMSI>235102692</MMSI><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/vessel?imo=9787053</href><rel>self</rel></Link></Links></Vessel><Vessel><Name>MAREEL SILVER</Name><MMSI>235108448</MMSI><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/vessel?mmsi=235108448</href><rel>self</rel></Link></Links></Vessel></Vessels>'
+            application/json:
+              examples:
+                Example1:
+                  summary: Example 1
+                  value: '{"@VersionMajor":1},{"@VersionMinor":0},{"Name":"NJORD WIND","IMO":9858814,"MMSI":232023506,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/vessel?imo=9858814","rel":"self"}}},{"Name":"NJORD KITTIWAKE","MMSI":235095774,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/vessel?mmsi=235095774","rel":"self"}}},{"Name":"NJORD CURLEW","MMSI":235095775,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/vessel?mmsi=235095775","rel":"self"}}},{"Name":"NJORD BALDER","IMO":9768629,"MMSI":235116577,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/vessel?imo=9768629","rel":"self"}}},{"Name":"NJORD SNIPE","MMSI":235103431,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/vessel?mmsi=235103431","rel":"self"}}},{"Name":"NJORD ZENITH","IMO":9828601,"MMSI":232013230,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/vessel?imo=9828601","rel":"self"}}},{"Name":"NJORD AVOCET","IMO":8355920,"MMSI":235095773,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/vessel?imo=8355920","rel":"self"}}}'
+                Example2:
+                  summary: Example 2
+                  value: '{"@VersionMajor":1},{"@VersionMinor":0},{"Name":"MAREEL VERDIGRIS","IMO":9787065,"MMSI":235102691,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/vessel?imo=9787065","rel":"self"}}},{"Name":"MAREEL TURQUOISE","IMO":9714367,"MMSI":235096275,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/vessel?imo=9714367","rel":"self"}}},{"Name":"MAREEL ONYX","MMSI":235086358,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/vessel?mmsi=235086358","rel":"self"}}},{"Name":"MAREEL VIOLET","IMO":9787053,"MMSI":235102692,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/vessel?imo=9787053","rel":"self"}}},{"Name":"MAREEL SILVER","MMSI":235108448,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/vessel?mmsi=235108448","rel":"self"}}}'
+        400:
+          description: Bad Request
+          content:
+            application/xml:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>PARAMETER_MISSING</Code><Message>A required input parameter is missing in your request. Please consult the web service documentation.</Message></Error>'
+                MissingData:
+                  summary: Missing Data
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>DATA_MISSING</Code><Message>No data was found for your selection. Please try again with another selection.</Message></Error>'
+            application/json:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '{"Code": "PARAMETER_MISSING","Message": "A required input parameter is missing in your request. Please consult the web service documentation."}'
+                MissingData:
+                  summary: Missing Data
+                  value: '{"Code": "DATA_MISSING","Message": "No data was found for your selection. Please try again with another selection."}'
+        403:
+          description: Unauthorized
+          content:
+            application/xml:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_MISSING</Code><Message>An access token was not supplied. See documentation for details on how to pass your token to the web service.</Message></Error>'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_INVALID</Code><Message>An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token.</Message></Error>'
+                DisabledToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_DISABLED</Code><Message>The supplied token has been disabled. Please contact us for assistance.</Message></Error>'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_EXPIRED</Code><Message>The supplied token is expired. Please contact us for assistance.</Message></Error>'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_UNAUTHORIZED</Code><Message>The supplied token is not authorized to access the given web service. Please contact us for assistance.</Message></Error>'
+            application/json:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '{"Code": "TOKEN_MISSING","Message": "An access token was not supplied. See documentation for details on how to pass your token to the web service."}'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '{"Code": "TOKEN_INVALID","Message": "An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token."}'
+                DisabledToken:
+                  summary: Disabled Token
+                  value: '{"Code": "TOKEN_DISABLED","Message": "The supplied token has been disabled. Please contact us for assistance."}'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '{"Code": "TOKEN_EXPIRED","Message": "The supplied token is expired. Please contact us for assistance."}'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '{"Code": "TOKEN_UNAUTHORIZED","Message": "The supplied token is not authorized to access the given web service. Please contact us for assistance."}'
+        500:
+          description: Error
+          content:
+            application/xml:
+              examples:
+                Error:
+                  summary: Error
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>ORA-XXXXX</Code><Message>Explanation for the error.</Message></Error>'
+            application/json:
+              examples:
+                Error:
+                  summary: Error
+                  value: '{"Code": "ORA-XXXXX","Message": "Explanation for the error."}'
+  /vessel:
+    get:
+      tags:
+      - "Vessel"
+      summary: Get Vessel Info
+      description: Returns information on a passed-in vessel (either through IMO or MMSI number, one of both needs to be supplied).
+      operationId: getVessel
+      parameters:
+      - name: imo
+        in: query
+        description: IMO Number
+        required: false
+        schema:
+          type: string
+        example: 7365851
+      - name: mmsi
+        in: query
+        description: MMSI Number
+        required: false
+        schema:
+          type: string
+        example: 245239000
+      - name: format
+        in: query
+        description: Response format
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            default: xml
+            enum:
+            - xml
+            - json
+      - name: token
+        in: query
+        description: Authentication token (aka API Key)
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/xml:
+              examples:
+                Example1:
+                  summary: Example 1
+                  value: '<?xml version="1.0" encoding="UTF-8"?><Vessel VersionMajor="1" VersionMinor="0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:RXZDD"><Name>DC BRUGGE</Name><IMO>7365851</IMO><MMSI>245239000</MMSI><CallSign>PFCE</CallSign><Flag><Code>NL</Code><Name>Netherlands</Name></Flag><ShipType><Code>1</Code><Name>Maritime Transport</Name><Description/></ShipType><OverallLength>89.99</OverallLength><OverallBeam>15.00</OverallBeam><MaxDraught>5.98</MaxDraught><GrossTonnage>2840.00</GrossTonnage><DeadWeight>5150.00</DeadWeight></Vessel>'
+                Example2:
+                  summary: Example 2
+                  value: '<?xml version="1.0" encoding="UTF-8"?><Vessel VersionMajor="1" VersionMinor="0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:RXZDD"><Name>AQUALINK</Name><MMSI>205678000</MMSI><CallSign>ORRR</CallSign><Flag><Code>BE</Code><Name>Belgium</Name></Flag><ShipType><Code>1</Code><Name>Maritime Transport</Name><Description/></ShipType><OverallLength>18.10</OverallLength><OverallBeam>5.00</OverallBeam><MaxDraught>1.30</MaxDraught><GrossTonnage>45.00</GrossTonnage><DeadWeight>8.00</DeadWeight></Vessel>'
+            application/json:
+              examples:
+                Example1:
+                  summary: Example 1
+                  value: '{"@VersionMajor":1,"@VersionMinor":0,"Name":"DC BRUGGE","IMO":7365851,"MMSI":245239000,"CallSign":"PFCE","Flag":{"Code":"NL","Name":"Netherlands"},"ShipType":{"Code":1,"Name":"Maritime Transport","Description":null},"OverallLength":89.99,"OverallBeam":15.0,"MaxDraught":5.98,"GrossTonnage":2840.0,"DeadWeight":5150.0}'
+                Example2:
+                  summary: Example 2
+                  value: '{"@VersionMajor":1,"@VersionMinor":0,"Name":"AQUALINK","MMSI":205678000,"CallSign":"ORRR","Flag":{"Code":"BE","Name":"Belgium"},"ShipType":{"Code":1,"Name":"Maritime Transport","Description":null},"OverallLength":18.1,"OverallBeam":5.0,"MaxDraught":1.3,"GrossTonnage":45.0,"DeadWeight":8.0}'
+        400:
+          description: Bad Request
+          content:
+            application/xml:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>PARAMETER_MISSING</Code><Message>A required input parameter is missing in your request. Please consult the web service documentation.</Message></Error>'
+                MissingData:
+                  summary: Missing Data
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>DATA_MISSING</Code><Message>No data was found for your selection. Please try again with another selection.</Message></Error>'
+            application/json:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '{"Code": "PARAMETER_MISSING","Message": "A required input parameter is missing in your request. Please consult the web service documentation."}'
+                MissingData:
+                  summary: Missing Data
+                  value: '{"Code": "DATA_MISSING","Message": "No data was found for your selection. Please try again with another selection."}'
+        403:
+          description: Unauthorized
+          content:
+            application/xml:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_MISSING</Code><Message>An access token was not supplied. See documentation for details on how to pass your token to the web service.</Message></Error>'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_INVALID</Code><Message>An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token.</Message></Error>'
+                DisabledToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_DISABLED</Code><Message>The supplied token has been disabled. Please contact us for assistance.</Message></Error>'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_EXPIRED</Code><Message>The supplied token is expired. Please contact us for assistance.</Message></Error>'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_UNAUTHORIZED</Code><Message>The supplied token is not authorized to access the given web service. Please contact us for assistance.</Message></Error>'
+            application/json:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '{"Code": "TOKEN_MISSING","Message": "An access token was not supplied. See documentation for details on how to pass your token to the web service."}'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '{"Code": "TOKEN_INVALID","Message": "An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token."}'
+                DisabledToken:
+                  summary: Disabled Token
+                  value: '{"Code": "TOKEN_DISABLED","Message": "The supplied token has been disabled. Please contact us for assistance."}'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '{"Code": "TOKEN_EXPIRED","Message": "The supplied token is expired. Please contact us for assistance."}'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '{"Code": "TOKEN_UNAUTHORIZED","Message": "The supplied token is not authorized to access the given web service. Please contact us for assistance."}'
+        500:
+          description: Error
+          content:
+            application/xml:
+              examples:
+                Error:
+                  summary: Error
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>ORA-XXXXX</Code><Message>Explanation for the error.</Message></Error>'
+            application/json:
+              examples:
+                Error:
+                  summary: Error
+                  value: '{"Code": "ORA-XXXXX","Message": "Explanation for the error."}'
+  /stays:
+    get:
+      tags:
+      - "Stays"
+      summary: Search Stays
+      description: Lists all stays modified in the defined timeframe (seconds).
+      operationId: getStays
+      parameters:
+      - name: age
+        in: query
+        description: Change Timeframe (Seconds)
+        required: true
+        schema:
+          type: int
+        example: 300
+      - name: format
+        in: query
+        description: Response format
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            default: xml
+            enum:
+            - xml
+            - json
+      - name: token
+        in: query
+        description: Authentication token (aka API Key)
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/xml:
+              examples:
+                Example1:
+                  summary: Example
+                  value: '<?xml version="1.0" encoding="UTF-8"?><Stays VersionMajor="1" VersionMinor="0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:RXZDD"><Stay><Number>23002308</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002308</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002463</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002463</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002462</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002462</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002461</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002461</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002460</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002460</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002459</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002459</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002458</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002458</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002457</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002457</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002455</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002455</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002454</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002454</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002453</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002453</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002452</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002452</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002451</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002451</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002449</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002449</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002266</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002266</href><rel>self</rel></Link></Links></Stay><Stay><Number>23001996</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23001996</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002445</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002445</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002444</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002444</href><rel>self</rel></Link></Links></Stay><Stay><Number>23001561</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23001561</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002429</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002429</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002427</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002427</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002426</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002426</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002425</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002425</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002422</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002422</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002421</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002421</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002420</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002420</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002418</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002418</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002417</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002417</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002416</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002416</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002415</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002415</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002414</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002414</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002412</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002412</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002411</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002411</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002283</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002283</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002207</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002207</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002311</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002311</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002309</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002309</href><rel>self</rel></Link></Links></Stay><Stay><Number>23001745</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23001745</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002312</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002312</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002377</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002377</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002315</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002315</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002321</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002321</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002326</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002326</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002396</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002396</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002385</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002385</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002306</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002306</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002316</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002316</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002305</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002305</href><rel>self</rel></Link></Links></Stay><Stay><Number>22012285</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/22012285</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002318</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002318</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002379</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002379</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002374</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002374</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002323</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002323</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002300</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002300</href><rel>self</rel></Link></Links></Stay><Stay><Number>23001927</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23001927</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002257</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002257</href><rel>self</rel></Link></Links></Stay><Stay><Number>23002169</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002169</href><rel>self</rel></Link></Links></Stay><Stay><Number>23000525</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23000525</href><rel>self</rel></Link></Links></Stay><Stay><Number>22010632</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/22010632</href><rel>self</rel></Link></Links></Stay><Stay><Number>23000844</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23000844</href><rel>self</rel></Link></Links></Stay><Stay><Number>23001178</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23001178</href><rel>self</rel></Link></Links></Stay><Stay><Number>23001448</Number><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23001448</href><rel>self</rel></Link></Links></Stay></Stays>'
+            application/json:
+              examples:
+                Example1:
+                  summary: Example
+                  value: '{"@VersionMajor":1},{"@VersionMinor":0},{"Number":23002308,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002308","rel":"self"}}},{"Number":23002463,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002463","rel":"self"}}},{"Number":23002462,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002462","rel":"self"}}},{"Number":23002461,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002461","rel":"self"}}},{"Number":23002460,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002460","rel":"self"}}},{"Number":23002459,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002459","rel":"self"}}},{"Number":23002458,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002458","rel":"self"}}},{"Number":23002457,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002457","rel":"self"}}},{"Number":23002455,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002455","rel":"self"}}},{"Number":23002454,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002454","rel":"self"}}},{"Number":23002453,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002453","rel":"self"}}},{"Number":23002452,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002452","rel":"self"}}},{"Number":23002451,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002451","rel":"self"}}},{"Number":23002449,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002449","rel":"self"}}},{"Number":23002266,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002266","rel":"self"}}},{"Number":23001996,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23001996","rel":"self"}}},{"Number":23002445,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002445","rel":"self"}}},{"Number":23002444,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002444","rel":"self"}}},{"Number":23001561,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23001561","rel":"self"}}},{"Number":23002429,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002429","rel":"self"}}},{"Number":23002427,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002427","rel":"self"}}},{"Number":23002426,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002426","rel":"self"}}},{"Number":23002425,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002425","rel":"self"}}},{"Number":23002422,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002422","rel":"self"}}},{"Number":23002421,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002421","rel":"self"}}},{"Number":23002420,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002420","rel":"self"}}},{"Number":23002418,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002418","rel":"self"}}},{"Number":23002417,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002417","rel":"self"}}},{"Number":23002416,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002416","rel":"self"}}},{"Number":23002415,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002415","rel":"self"}}},{"Number":23002414,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002414","rel":"self"}}},{"Number":23002412,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002412","rel":"self"}}},{"Number":23002411,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002411","rel":"self"}}},{"Number":23002283,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002283","rel":"self"}}},{"Number":23002207,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002207","rel":"self"}}},{"Number":23002311,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002311","rel":"self"}}},{"Number":23002309,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002309","rel":"self"}}},{"Number":23001745,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23001745","rel":"self"}}},{"Number":23002312,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002312","rel":"self"}}},{"Number":23002377,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002377","rel":"self"}}},{"Number":23002315,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002315","rel":"self"}}},{"Number":23002321,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002321","rel":"self"}}},{"Number":23002326,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002326","rel":"self"}}},{"Number":23002396,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002396","rel":"self"}}},{"Number":23002385,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002385","rel":"self"}}},{"Number":23002306,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002306","rel":"self"}}},{"Number":23002316,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002316","rel":"self"}}},{"Number":23002305,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002305","rel":"self"}}},{"Number":22012285,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/22012285","rel":"self"}}},{"Number":23002318,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002318","rel":"self"}}},{"Number":23002379,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002379","rel":"self"}}},{"Number":23002374,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002374","rel":"self"}}},{"Number":23002323,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002323","rel":"self"}}},{"Number":23002300,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002300","rel":"self"}}},{"Number":23001927,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23001927","rel":"self"}}},{"Number":23002257,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002257","rel":"self"}}},{"Number":23002169,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23002169","rel":"self"}}},{"Number":23000525,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23000525","rel":"self"}}},{"Number":22010632,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/22010632","rel":"self"}}},{"Number":23000844,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23000844","rel":"self"}}},{"Number":23001178,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23001178","rel":"self"}}},{"Number":23001448,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23001448","rel":"self"}}}'
+        400:
+          description: Bad Request
+          content:
+            application/xml:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>PARAMETER_MISSING</Code><Message>A required input parameter is missing in your request. Please consult the web service documentation.</Message></Error>'
+                MissingData:
+                  summary: Missing Data
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>DATA_MISSING</Code><Message>No data was found for your selection. Please try again with another selection.</Message></Error>'
+            application/json:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '{"Code": "PARAMETER_MISSING","Message": "A required input parameter is missing in your request. Please consult the web service documentation."}'
+                MissingData:
+                  summary: Missing Data
+                  value: '{"Code": "DATA_MISSING","Message": "No data was found for your selection. Please try again with another selection."}'
+        403:
+          description: Unauthorized
+          content:
+            application/xml:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_MISSING</Code><Message>An access token was not supplied. See documentation for details on how to pass your token to the web service.</Message></Error>'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_INVALID</Code><Message>An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token.</Message></Error>'
+                DisabledToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_DISABLED</Code><Message>The supplied token has been disabled. Please contact us for assistance.</Message></Error>'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_EXPIRED</Code><Message>The supplied token is expired. Please contact us for assistance.</Message></Error>'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_UNAUTHORIZED</Code><Message>The supplied token is not authorized to access the given web service. Please contact us for assistance.</Message></Error>'
+            application/json:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '{"Code": "TOKEN_MISSING","Message": "An access token was not supplied. See documentation for details on how to pass your token to the web service."}'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '{"Code": "TOKEN_INVALID","Message": "An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token."}'
+                DisabledToken:
+                  summary: Disabled Token
+                  value: '{"Code": "TOKEN_DISABLED","Message": "The supplied token has been disabled. Please contact us for assistance."}'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '{"Code": "TOKEN_EXPIRED","Message": "The supplied token is expired. Please contact us for assistance."}'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '{"Code": "TOKEN_UNAUTHORIZED","Message": "The supplied token is not authorized to access the given web service. Please contact us for assistance."}'
+        500:
+          description: Error
+          content:
+            application/xml:
+              examples:
+                Error:
+                  summary: Error
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>ORA-XXXXX</Code><Message>Explanation for the error.</Message></Error>'
+            application/json:
+              examples:
+                Error:
+                  summary: Error
+                  value: '{"Code": "ORA-XXXXX","Message": "Explanation for the error."}'
+  /stay/{id}:
+    get:
+      tags:
+      - "Stay"
+      summary: Get Stay Info
+      description: Returns detailed information on a passed-in stay number (including its voyages and passages).
+      operationId: getStay
+      parameters:
+      - name: id
+        in: path
+        description: Stay Number
+        required: true
+        schema:
+          type: string
+        example: 23002445
+      - name: format
+        in: query
+        description: Response format
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            default: xml
+            enum:
+            - xml
+            - json
+      - name: token
+        in: query
+        description: Authentication token (aka API Key)
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/xml:
+              examples:
+                Example1:
+                  summary: Example
+                  value: '<?xml version="1.0" encoding="UTF-8"?><Stay VersionMajor="1" VersionMinor="0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:RXZDD"><Number>23002445</Number><Status>Active</Status><Vessel><Name>NJORD KITTIWAKE</Name><MMSI>235095774</MMSI><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/vessel?ref=5154</href><rel>self</rel></Link></Links></Vessel><ETA>2023-04-04T08:59:00Z</ETA><ATA>2023-04-04T08:06:00Z</ATA><ETD>2023-04-04T09:41:00Z</ETD><ATD>2023-04-04T10:20:00Z</ATD><Origin><Port><Code>BEOST</Code><Name>Oostende</Name><Links><Link><href>https://portal.rxseaport.eu/ords/prd/locations/v1/locode/BEOST</href><rel>self</rel></Link></Links></Port><ETD>2023-04-04T08:00:00Z</ETD></Origin><Destination><Port><Code>BEOST</Code><Name>Oostende</Name><Links><Link><href>https://portal.rxseaport.eu/ords/prd/locations/v1/locode/BEOST</href><rel>self</rel></Link></Links></Port><ETA>2023-04-04T10:00:00Z</ETA></Destination><Voyages><Voyage><Number>556293</Number><Sequence>1</Sequence><Type/><Agent><Code>HOPPEZ</Code><Name>Hoppe Ship Agencies</Name></Agent><From><Location><Code>BESEA0WEST00BSB</Code><Name>Oostende Rede</Name></Location><EstimatedTime>2023-04-04T08:59:00Z</EstimatedTime><ActualTime>2023-04-04T08:06:00Z</ActualTime></From><To><Location><Code>BEOST074060605D</Code><Name>Kaai 605 D</Name></Location><EstimatedTime>2023-04-04T09:00:00Z</EstimatedTime><ActualTime>2023-04-04T08:17:00Z</ActualTime></To><Passages/><Draught>1.40</Draught><Persons/></Voyage><Voyage><Number>556308</Number><Sequence>2</Sequence><Type/><Agent><Code>HOPPEZ</Code><Name>Hoppe Ship Agencies</Name></Agent><From><Location><Code>BEOST074060605D</Code><Name>Kaai 605 D</Name></Location><ActualTime>2023-04-04T09:32:00Z</ActualTime></From><To><Location><Code>BEOST074060605D</Code><Name>Kaai 605 D</Name></Location><ActualTime>2023-04-04T09:38:00Z</ActualTime></To><Passages/><Draught>1.40</Draught><Persons/></Voyage><Voyage><Number>556296</Number><Sequence>3</Sequence><Type/><Agent><Code>HOPPEZ</Code><Name>Hoppe Ship Agencies</Name></Agent><From><Location><Code>BEOST074060605D</Code><Name>Kaai 605 D</Name></Location><EstimatedTime>2023-04-04T09:40:00Z</EstimatedTime><ActualTime>2023-04-04T10:11:00Z</ActualTime></From><To><Location><Code>BESEA0WEST00BSB</Code><Name>Oostende Rede</Name></Location><EstimatedTime>2023-04-04T09:41:00Z</EstimatedTime><ActualTime>2023-04-04T10:20:00Z</ActualTime></To><Passages/><Draught>1.40</Draught><Persons/></Voyage></Voyages></Stay>'
+            application/json:
+              examples:
+                Example1:
+                  summary: Example
+                  value: '{"@VersionMajor":1,"@VersionMinor":0,"Number":23002445,"Status":"Active","Vessel":{"Name":"NJORD KITTIWAKE","MMSI":235095774,"Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/vessel?ref=5154","rel":"self"}}},"ETA":"2023-04-04T08:59:00Z","ATA":"2023-04-04T08:06:00Z","ETD":"2023-04-04T09:41:00Z","ATD":"2023-04-04T10:20:00Z","Origin":{"Port":{"Code":"BEOST","Name":"Oostende","Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/locations/v1/locode/BEOST","rel":"self"}}},"ETD":"2023-04-04T08:00:00Z"},"Destination":{"Port":{"Code":"BEOST","Name":"Oostende","Links":{"Link":{"href":"https://portal.rxseaport.eu/ords/prd/locations/v1/locode/BEOST","rel":"self"}}},"ETA":"2023-04-04T10:00:00Z"},"Voyages":[{"Number":556293,"Sequence":1,"Type":null,"Agent":{"Code":"HOPPEZ","Name":"Hoppe Ship Agencies"},"From":{"Location":{"Code":"BESEA0WEST00BSB","Name":"Oostende Rede"},"EstimatedTime":"2023-04-04T08:59:00Z","ActualTime":"2023-04-04T08:06:00Z"},"To":{"Location":{"Code":"BEOST074060605D","Name":"Kaai 605 D"},"EstimatedTime":"2023-04-04T09:00:00Z","ActualTime":"2023-04-04T08:17:00Z"},"Passages":null,"Draught":1.4,"Persons":null},{"Number":556308,"Sequence":2,"Type":null,"Agent":{"Code":"HOPPEZ","Name":"Hoppe Ship Agencies"},"From":{"Location":{"Code":"BEOST074060605D","Name":"Kaai 605 D"},"ActualTime":"2023-04-04T09:32:00Z"},"To":{"Location":{"Code":"BEOST074060605D","Name":"Kaai 605 D"},"ActualTime":"2023-04-04T09:38:00Z"},"Passages":null,"Draught":1.4,"Persons":null},{"Number":556296,"Sequence":3,"Type":null,"Agent":{"Code":"HOPPEZ","Name":"Hoppe Ship Agencies"},"From":{"Location":{"Code":"BEOST074060605D","Name":"Kaai 605 D"},"EstimatedTime":"2023-04-04T09:40:00Z","ActualTime":"2023-04-04T10:11:00Z"},"To":{"Location":{"Code":"BESEA0WEST00BSB","Name":"Oostende Rede"},"EstimatedTime":"2023-04-04T09:41:00Z","ActualTime":"2023-04-04T10:20:00Z"},"Passages":null,"Draught":1.4,"Persons":null}]}'
+        400:
+          description: Bad Request
+          content:
+            application/xml:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>PARAMETER_MISSING</Code><Message>A required input parameter is missing in your request. Please consult the web service documentation.</Message></Error>'
+                MissingData:
+                  summary: Missing Data
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>DATA_MISSING</Code><Message>No data was found for your selection. Please try again with another selection.</Message></Error>'
+            application/json:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '{"Code": "PARAMETER_MISSING","Message": "A required input parameter is missing in your request. Please consult the web service documentation."}'
+                MissingData:
+                  summary: Missing Data
+                  value: '{"Code": "DATA_MISSING","Message": "No data was found for your selection. Please try again with another selection."}'
+        403:
+          description: Unauthorized
+          content:
+            application/xml:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_MISSING</Code><Message>An access token was not supplied. See documentation for details on how to pass your token to the web service.</Message></Error>'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_INVALID</Code><Message>An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token.</Message></Error>'
+                DisabledToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_DISABLED</Code><Message>The supplied token has been disabled. Please contact us for assistance.</Message></Error>'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_EXPIRED</Code><Message>The supplied token is expired. Please contact us for assistance.</Message></Error>'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_UNAUTHORIZED</Code><Message>The supplied token is not authorized to access the given web service. Please contact us for assistance.</Message></Error>'
+            application/json:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '{"Code": "TOKEN_MISSING","Message": "An access token was not supplied. See documentation for details on how to pass your token to the web service."}'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '{"Code": "TOKEN_INVALID","Message": "An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token."}'
+                DisabledToken:
+                  summary: Disabled Token
+                  value: '{"Code": "TOKEN_DISABLED","Message": "The supplied token has been disabled. Please contact us for assistance."}'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '{"Code": "TOKEN_EXPIRED","Message": "The supplied token is expired. Please contact us for assistance."}'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '{"Code": "TOKEN_UNAUTHORIZED","Message": "The supplied token is not authorized to access the given web service. Please contact us for assistance."}'
+        500:
+          description: Error
+          content:
+            application/xml:
+              examples:
+                Error:
+                  summary: Error
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>ORA-XXXXX</Code><Message>Explanation for the error.</Message></Error>'
+            application/json:
+              examples:
+                Error:
+                  summary: Error
+                  value: '{"Code": "ORA-XXXXX","Message": "Explanation for the error."}'
+    delete:
+      tags:
+      - "Stay"
+      summary: Delete Stay
+      description: Removes a stay.
+      operationId: deleteStay
+      parameters:
+      - name: id
+        in: path
+        description: Stay Number
+        required: true
+        schema:
+          type: string
+        example: 23002445
+      - name: format
+        in: query
+        description: Response format
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            default: xml
+            enum:
+            - xml
+            - json
+      - name: token
+        in: query
+        description: Authentication token (aka API Key)
+        required: true
+        schema:
+          type: string
+      responses:
+        204:
+          description: Successful operation
+        400:
+          description: Bad Request
+          content:
+            application/xml:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>PARAMETER_MISSING</Code><Message>A required input parameter is missing in your request. Please consult the web service documentation.</Message></Error>'
+            application/json:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '{"Code": "PARAMETER_MISSING","Message": "A required input parameter is missing in your request. Please consult the web service documentation."}'
+        403:
+          description: Unauthorized
+          content:
+            application/xml:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_MISSING</Code><Message>An access token was not supplied. See documentation for details on how to pass your token to the web service.</Message></Error>'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_INVALID</Code><Message>An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token.</Message></Error>'
+                DisabledToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_DISABLED</Code><Message>The supplied token has been disabled. Please contact us for assistance.</Message></Error>'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_EXPIRED</Code><Message>The supplied token is expired. Please contact us for assistance.</Message></Error>'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_UNAUTHORIZED</Code><Message>The supplied token is not authorized to access the given web service. Please contact us for assistance.</Message></Error>'
+            application/json:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '{"Code": "TOKEN_MISSING","Message": "An access token was not supplied. See documentation for details on how to pass your token to the web service."}'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '{"Code": "TOKEN_INVALID","Message": "An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token."}'
+                DisabledToken:
+                  summary: Disabled Token
+                  value: '{"Code": "TOKEN_DISABLED","Message": "The supplied token has been disabled. Please contact us for assistance."}'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '{"Code": "TOKEN_EXPIRED","Message": "The supplied token is expired. Please contact us for assistance."}'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '{"Code": "TOKEN_UNAUTHORIZED","Message": "The supplied token is not authorized to access the given web service. Please contact us for assistance."}'
+        500:
+          description: Error
+          content:
+            application/xml:
+              examples:
+                Error:
+                  summary: Error
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>ORA-XXXXX</Code><Message>Explanation for the error.</Message></Error>'
+            application/json:
+              examples:
+                Error:
+                  summary: Error
+                  value: '{"Code": "ORA-XXXXX","Message": "Explanation for the error."}'
+  /voyage/{id}:
+    get:
+      tags:
+      - "Voyage"
+      summary: Get Voyage Info
+      description: Returns detailed information on a passed-in voyage number (including its passages).
+      operationId: getVoyage
+      parameters:
+      - name: id
+        in: path
+        description: Voyage Number
+        required: true
+        schema:
+          type: string
+        example: 552900
+      - name: format
+        in: query
+        description: Response format
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            default: xml
+            enum:
+            - xml
+            - json
+      - name: token
+        in: query
+        description: Authentication token (aka API Key)
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/xml:
+              examples:
+                Example1:
+                  summary: Example 1
+                  value: '<?xml version="1.0" encoding="UTF-8"?><Voyage VersionMajor="1" VersionMinor="0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:RXZDD"><Number>552900</Number><Status>Active</Status><Type/><Agent>LALEMZ</Agent><From><Location><Code>BESEA0WEST00BSB</Code><Name>Oostende Rede</Name></Location><EstimatedTime>2023-03-01T13:00:00Z</EstimatedTime><ActualTime>2023-03-01T12:47:00Z</ActualTime></From><To><Location><Code>BEOST0740600760</Code><Name>Kaai 760 Damen</Name></Location><EstimatedTime>2023-03-01T13:00:00Z</EstimatedTime><ActualTime>2023-03-01T15:16:00Z</ActualTime></To><Passages/><Draught>2.50</Draught><Persons/><Links><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/voyage/552900</href><rel>self</rel></Link><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23001448</href><rel>stay</rel></Link><Link><href>https://portal.rxseaport.eu/ords/prd/ensor/v1/vessel?ref=5218</href><rel>vessel</rel></Link></Links></Voyage>'
+            application/json:
+              examples:
+                Example1:
+                  summary: Example
+                  value: '{"@VersionMajor":1,"@VersionMinor":0,"Number":552900,"Status":"Active","Type":null,"Agent":"LALEMZ","From":{"Location":{"Code":"BESEA0WEST00BSB","Name":"Oostende Rede"},"EstimatedTime":"2023-03-01T13:00:00Z","ActualTime":"2023-03-01T12:47:00Z"},"To":{"Location":{"Code":"BEOST0740600760","Name":"Kaai 760 Damen"},"EstimatedTime":"2023-03-01T13:00:00Z","ActualTime":"2023-03-01T15:16:00Z"},"Passages":null,"Draught":2.5,"Persons":null,"Links":[{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/voyage/552900","rel":"self"},{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/stay/23001448","rel":"stay"},{"href":"https://portal.rxseaport.eu/ords/prd/ensor/v1/vessel?ref=5218","rel":"vessel"}]}'
+        400:
+          description: Bad Request
+          content:
+            application/xml:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>PARAMETER_MISSING</Code><Message>A required input parameter is missing in your request. Please consult the web service documentation.</Message></Error>'
+                MissingData:
+                  summary: Missing Data
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>DATA_MISSING</Code><Message>No data was found for your selection. Please try again with another selection.</Message></Error>'
+            application/json:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '{"Code": "PARAMETER_MISSING","Message": "A required input parameter is missing in your request. Please consult the web service documentation."}'
+                MissingData:
+                  summary: Missing Data
+                  value: '{"Code": "DATA_MISSING","Message": "No data was found for your selection. Please try again with another selection."}'
+        403:
+          description: Unauthorized
+          content:
+            application/xml:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_MISSING</Code><Message>An access token was not supplied. See documentation for details on how to pass your token to the web service.</Message></Error>'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_INVALID</Code><Message>An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token.</Message></Error>'
+                DisabledToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_DISABLED</Code><Message>The supplied token has been disabled. Please contact us for assistance.</Message></Error>'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_EXPIRED</Code><Message>The supplied token is expired. Please contact us for assistance.</Message></Error>'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_UNAUTHORIZED</Code><Message>The supplied token is not authorized to access the given web service. Please contact us for assistance.</Message></Error>'
+            application/json:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '{"Code": "TOKEN_MISSING","Message": "An access token was not supplied. See documentation for details on how to pass your token to the web service."}'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '{"Code": "TOKEN_INVALID","Message": "An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token."}'
+                DisabledToken:
+                  summary: Disabled Token
+                  value: '{"Code": "TOKEN_DISABLED","Message": "The supplied token has been disabled. Please contact us for assistance."}'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '{"Code": "TOKEN_EXPIRED","Message": "The supplied token is expired. Please contact us for assistance."}'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '{"Code": "TOKEN_UNAUTHORIZED","Message": "The supplied token is not authorized to access the given web service. Please contact us for assistance."}'
+        500:
+          description: Error
+          content:
+            application/xml:
+              examples:
+                Error:
+                  summary: Error
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>ORA-XXXXX</Code><Message>Explanation for the error.</Message></Error>'
+            application/json:
+              examples:
+                Error:
+                  summary: Error
+                  value: '{"Code": "ORA-XXXXX","Message": "Explanation for the error."}'
+    delete:
+      tags:
+      - "Voyage"
+      summary: Delete Voyage
+      description: Removes a voyage. If this is an incoming voyage the entire stay gets removed.
+      operationId: deleteVoyage
+      parameters:
+      - name: id
+        in: path
+        description: Voyage Number
+        required: true
+        schema:
+          type: string
+        example: 552900
+      - name: format
+        in: query
+        description: Response format
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            default: xml
+            enum:
+            - xml
+            - json
+      - name: token
+        in: query
+        description: Authentication token (aka API Key)
+        required: true
+        schema:
+          type: string
+      responses:
+        204:
+          description: Successful operation
+        400:
+          description: Bad Request
+          content:
+            application/xml:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>PARAMETER_MISSING</Code><Message>A required input parameter is missing in your request. Please consult the web service documentation.</Message></Error>'
+            application/json:
+              examples:
+                MissingParameter:
+                  summary: Missing Parameter
+                  value: '{"Code": "PARAMETER_MISSING","Message": "A required input parameter is missing in your request. Please consult the web service documentation."}'
+        403:
+          description: Unauthorized
+          content:
+            application/xml:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_MISSING</Code><Message>An access token was not supplied. See documentation for details on how to pass your token to the web service.</Message></Error>'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_INVALID</Code><Message>An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token.</Message></Error>'
+                DisabledToken:
+                  summary: Missing Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_DISABLED</Code><Message>The supplied token has been disabled. Please contact us for assistance.</Message></Error>'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_EXPIRED</Code><Message>The supplied token is expired. Please contact us for assistance.</Message></Error>'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>TOKEN_UNAUTHORIZED</Code><Message>The supplied token is not authorized to access the given web service. Please contact us for assistance.</Message></Error>'
+            application/json:
+              examples:
+                MissingToken:
+                  summary: Missing Token
+                  value: '{"Code": "TOKEN_MISSING","Message": "An access token was not supplied. See documentation for details on how to pass your token to the web service."}'
+                InvalidToken:
+                  summary: Invalid Token
+                  value: '{"Code": "TOKEN_INVALID","Message": "An invalid access token was supplied. Double check that the token being passed in is valid or signup for a token."}'
+                DisabledToken:
+                  summary: Disabled Token
+                  value: '{"Code": "TOKEN_DISABLED","Message": "The supplied token has been disabled. Please contact us for assistance."}'
+                ExpiredToken:
+                  summary: Expired Token
+                  value: '{"Code": "TOKEN_EXPIRED","Message": "The supplied token is expired. Please contact us for assistance."}'
+                UnauthorizedToken:
+                  summary: Unauthorized Token
+                  value: '{"Code": "TOKEN_UNAUTHORIZED","Message": "The supplied token is not authorized to access the given web service. Please contact us for assistance."}'
+        500:
+          description: Error
+          content:
+            application/xml:
+              examples:
+                Error:
+                  summary: Error
+                  value: '<?xml version="1.0" encoding="UTF-8" ?><Error><Code>ORA-XXXXX</Code><Message>Explanation for the error.</Message></Error>'
+            application/json:
+              examples:
+                Error:
+                  summary: Error
+                  value: '{"Code": "ORA-XXXXX","Message": "Explanation for the error."}'
